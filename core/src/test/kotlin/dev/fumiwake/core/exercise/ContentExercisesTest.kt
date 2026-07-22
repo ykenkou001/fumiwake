@@ -5,19 +5,13 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.test.fail
-import org.junit.jupiter.api.Disabled
 
 /**
  * Full-corpus validation of the bundled exercise YAML under
  * `content/exercises/` (system property `fumiwake.content.dir`, injected by
- * `core/build.gradle.kts`).
- *
- * Disabled at M1: `content/` is still empty (M1.5's job). Per
- * docs/IMPLEMENTATION_PLAN.md §6 the integration lead re-enables this class
- * once M1.5 lands real exercise files, at which point "zero files" becomes a
- * real failure rather than an expected M1-time state.
+ * `core/build.gradle.kts`). Zero files is a failure: the bundled catalog
+ * must never silently ship empty.
  */
-@Disabled("enabled at M1.5 integration")
 class ContentExercisesTest {
 
     @Test
