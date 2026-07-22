@@ -119,7 +119,7 @@ if (hasAndroidSdk) include(":app") else println("Android SDK not found - :app sk
 | ビルド | Gradle wrapper（CI・ユーザー用）＋ローカルは /opt/gradle 直接 | wrapper 生成はローカルで可（services.gradle.org 到達可） |
 | UI | Jetpack Compose（BOM）＋ single Activity | AlphaTabView は `AndroidView{}` で埋込 |
 | 譜面・再生 | alphaTab 1.8.4 | §1 の確認結果どおり |
-| minSdk / target | 26 / 35 | alphaTab の minSdk=26 に合わせる |
+| minSdk / target / compile | 26 / 35 / 36 | alphaTab の minSdk=26。compileSdk 36 は androidx.core 1.17（alphaTab の推移的依存）の要求 |
 | シリアライズ | kotlinx.serialization + kaml 0.104.0（YAML） | リスクと代替は §8 R3 |
 | 進捗保存 | Android 標準 SQLite（`SQLiteOpenHelper`、ライブラリなし） | 逸脱根拠は §9 |
 | DI | なし（手書きコンストラクタ注入） | MVP 規模では不要 |
