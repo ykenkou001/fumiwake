@@ -1,0 +1,40 @@
+exerciseId: rhythm.rests.003
+conceptId: rhythm.rests
+prerequisites: ["rhythm.basic-values"]
+titleJa: "休符の総復習"
+alphatex: |
+  \title "休符の総復習"
+  \tempo 70
+  .
+  \ts 4 4
+  r.4 1.1.4 r.4 1.1.4 |
+  1.1.8 1.1.8 r.4 1.1.4 1.1.4 |
+  r.8 1.1.8 r.8 1.1.8 r.4 1.1.4 |
+  1.1.2 r.2 |
+  r.2 1.1.4 1.1.4 |
+  1.1.4 r.8 1.1.8 1.1.4 1.1.4 |
+  r.1 |
+  1.1.4 1.1.4 1.1.4 r.4 |
+explanationJa: "4分休符・8分休符・2分休符・全休符を、8小節を通して組み合わせて復習します。休符の位置は小節の頭だったり途中だったりと変化するので、どこで音を止め、どこで数え続けるかを毎回確認しながら進めましょう。休符があっても拍の流れは止まらないことがこの譜例のポイントです。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: null
+    noteText: "小節の最初が休符。まず1拍分待ってから弾き始めます。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: null
+    noteText: "8分休符から始まり、8分音符と交互になります。細かい休符は聞き逃しやすいので注意します。"
+  - barIndex: 3
+    beatIndex: 1
+    noteIndex: null
+    noteText: "2分音符の後、2分休符で残り2拍を静かに数えます。"
+  - barIndex: 4
+    beatIndex: 0
+    noteIndex: null
+    noteText: "小節の頭が2分休符。2拍分待ってから4分音符2つを弾きます。"
+  - barIndex: 6
+    beatIndex: 0
+    noteIndex: null
+    noteText: "全休符の小節。音は出しませんが、テンポは止めずに4拍数え続けます。"
+difficulty: 3

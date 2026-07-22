@@ -1,0 +1,38 @@
+exerciseId: rhythm.rests.002
+conceptId: rhythm.rests
+prerequisites: ["rhythm.basic-values"]
+titleJa: "短い休符に慣れる"
+alphatex: |
+  \title "短い休符に慣れる"
+  \tempo 65
+  .
+  \ts 4 4
+  1.1.8 r.8 1.1.8 r.8 1.1.4 1.1.4 |
+  r.8 1.1.8 r.8 1.1.8 1.1.4 1.1.4 |
+  1.1.4 1.1.4 r.2 |
+  r.4 1.1.4 r.4 1.1.4 |
+  1.1.2 r.4 1.1.4 |
+  r.2 1.1.2 |
+explanationJa: "この譜例では8分休符が登場します。8分休符は4分休符の半分の長さで、短い「間」を作ります。前半の小節では8分音符と8分休符が交互に現れ、後半では4分休符・2分休符も組み合わさります。短い休符ほど聞き逃しやすいので、拍の数え方を崩さずに感じ取れるか確認しましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: null
+    noteText: "8分休符。8分音符1つ分（0.5拍）だけ音を止めます。短い休符です。"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: null
+    noteText: "もう一つの8分休符。短い「間」が続けて入るパターンです。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: null
+    noteText: "小節の最初が休符から始まります。1拍目の前半を出さずに、すぐ音を出す準備をします。"
+  - barIndex: 2
+    beatIndex: 2
+    noteIndex: null
+    noteText: "2分休符。この小節の後半2拍は、音を止めたまま待ちます。"
+  - barIndex: 5
+    beatIndex: 0
+    noteIndex: null
+    noteText: "小節の頭が2分休符。2拍分待ってから音を出し始めます。"
+difficulty: 2

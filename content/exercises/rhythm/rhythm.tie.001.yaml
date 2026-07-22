@@ -1,0 +1,28 @@
+exerciseId: rhythm.tie.001
+conceptId: rhythm.tie
+prerequisites: ["rhythm.basic-values"]
+titleJa: "タイで音を伸ばす（小節の中で）"
+alphatex: |
+  \title "タイで音を伸ばす（小節の中で）"
+  \tempo 60
+  .
+  \ts 4 4
+  3.4.2 -.2 |
+  3.4.4 3.4.4 3.4.4 3.4.4 |
+  3.4.4 3.4.4 -.2 |
+  3.4.2 -.2 |
+explanationJa: "タイは同じ高さの音符どうしを弧線でつなぎ、「弾き直さずに音を伸ばす」ことを表す記号です。楽譜上は2つの音符でも、実際に鳴るのは1回のピッキングだけです。この譜例では2分音符どうしのタイでまず基本を確認し、4分音符から2分音符へのタイでも同じ考え方が使えることを見ていきます。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2分音符を弾きます。ここでピッキングします。"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "ここはタイ。同じ音の2分音符ですが、弾き直しません。直前の音をそのまま2拍分伸ばし、合計4拍(2+2)の音になります。"
+  - barIndex: 2
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "4分音符を弾いた直後にタイで2拍伸ばします。ピッキングは1回だけで、合計3拍(1+2)分音が鳴り続けます。"
+difficulty: 1

@@ -1,0 +1,36 @@
+exerciseId: rhythm.basic-values.001
+conceptId: rhythm.basic-values
+prerequisites: ["rhythm.beat"]
+titleJa: "音符の長さを比べる"
+alphatex: |
+  \title "音符の長さを比べる"
+  \tempo 60
+  .
+  \ts 4 4
+  2.2.1 |
+  2.2.2 2.2.2 |
+  2.2.4 2.2.4 2.2.4 2.2.4 |
+  2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 |
+explanationJa: "音符には長さ（音価）の違いがあり、全音符・2分音符・4分音符・8分音符はどれも「1小節=4拍」を分け方だけ変えて埋めています。この譜例では同じ高さの音を、1小節ずつ全音符→2分音符→4分音符→8分音符と細かくしていきます。音の数が増えても1小節の長さ（4拍）は変わらないことを確認しましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "全音符。1つの音で4拍まるごと伸ばします。この小節は音がこれ1つだけです。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2分音符。全音符の半分、2拍分の長さです。"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "2つ目の2分音符。2拍+2拍で、この小節も全音符と同じ4拍分になります。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4分音符。2分音符の半分、1拍分です。この小節は4分音符4つで4拍になります。"
+  - barIndex: 3
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "8分音符。4分音符の半分、0.5拍分です。この小節は8分音符8つで同じ4拍になります。"
+difficulty: 1

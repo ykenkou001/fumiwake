@@ -1,0 +1,44 @@
+exerciseId: rhythm.beat.001
+conceptId: rhythm.beat
+prerequisites: []
+titleJa: "4つの拍を数える"
+alphatex: |
+  \title "4つの拍を数える"
+  \tempo 60
+  .
+  \ts 4 4
+  3.3.4 3.3.4 3.3.4 3.3.4 |
+  3.3.4 3.3.4 3.3.4 3.3.4 |
+  3.3.4 3.3.4 3.3.4 3.3.4 |
+  3.3.4 3.3.4 3.3.4 3.3.4 |
+explanationJa: "4/4拍子は「1小節の中に4分音符が4つ入る」という意味です。この譜例では音の高さをすべて同じにして、リズム（拍）だけに意識を集中できるようにしています。1小節目の4つの音を「1・2・3・4」と声に出して数え、小節が変わったらまた「1」から数え直すことを確認しましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "1小節目の1拍目。ここから「1・2・3・4」と数え始めます。"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "2拍目です。"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "3拍目です。"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "4拍目、この小節の最後の拍です。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2小節目の1拍目。小節が変わっても、また「1」から数え直します。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "3小節目の1拍目です。"
+  - barIndex: 3
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4小節目の1拍目、この譜例の最後の小節です。"
+difficulty: 1

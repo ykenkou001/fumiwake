@@ -1,0 +1,27 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Kotlin
+.kotlin/
+
+# Android
+local.properties
+*.apk
+*.ap_
+*.aab
+
+# tools/texcheck downloaded dependency jars
+tools/texcheck/lib/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Claude Code session-local files (worktrees, local settings)
+.claude/

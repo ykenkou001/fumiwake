@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M2a spike screen layout.
+
+    Deliberately plain View + XML (no Compose): alphaTab.AlphaTabView only exposes a
+    (Context, AttributeSet) constructor, so XML inflate is the most reliable way to
+    create it (see docs/alphatab-api-notes.md).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <alphaTab.AlphaTabView
+        android:id="@+id/alphaTabView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/btnPlayPause"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_play" />
+
+        <Button
+            android:id="@+id/btnTempo50"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/tempo_50" />
+
+        <Button
+            android:id="@+id/btnTempo75"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/tempo_75" />
+
+        <Button
+            android:id="@+id/btnTempo100"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/tempo_100" />
+
+        <Button
+            android:id="@+id/btnLoop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/loop_off" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:minLines="2"
+        android:textIsSelectable="true"
+        android:text="@string/status_initializing" />
+
+</LinearLayout>

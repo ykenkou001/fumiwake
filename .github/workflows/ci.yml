@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write # release ジョブが GitHub Release を作成するため
+
+jobs:
+  core-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: core test
+        run: ./gradlew :core:test --no-daemon
+
+  android-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: app unit test + assemble debug
+        run: ./gradlew :app:testDebugUnitTest :app:assembleDebug --no-daemon
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+  # main への push 時のみ: APK を GitHub Release (tag: latest) に添付する。
+  # スマホからは https://github.com/ykenkou001/fumiwake/releases/latest/download/fumiwake.apk
+  # で直接ダウンロード→インストールできる。
+  # 当面は debug 署名（ランナー生成の一時鍵）で配布する。署名が毎回変わるため、
+  # 更新時は旧バージョンのアンインストールが必要（README 参照）。署名を固定して
+  # 上書きアップデートに対応する場合は、鍵を GitHub Secrets に登録して
+  # assembleRelease + signingConfig 方式に切り替える。
+  release:
+    if: github.ref == 'refs/heads/main'
+    needs: [core-test, android-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Assemble APK
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Rename APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk fumiwake.apk
+
+      - name: Publish to GitHub Release (tag latest)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: fumiwake latest
+          files: fumiwake.apk
+          make_latest: true

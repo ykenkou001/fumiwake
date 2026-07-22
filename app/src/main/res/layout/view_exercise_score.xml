@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Root layout for the AlphaTabView embedded in Compose via AndroidView (see
+    dev.fumiwake.app.score.ExerciseScoreView). alphaTab.AlphaTabView only has a
+    (Context, AttributeSet) constructor (docs/alphatab-api-notes.md), so XML inflate is
+    the reliable construction path, same as the M2a spike (activity_main.xml).
+-->
+<alphaTab.AlphaTabView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/alphaTabView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

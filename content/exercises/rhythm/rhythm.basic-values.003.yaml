@@ -1,0 +1,40 @@
+exerciseId: rhythm.basic-values.003
+conceptId: rhythm.basic-values
+prerequisites: ["rhythm.beat"]
+titleJa: "音価の総復習"
+alphatex: |
+  \title "音価の総復習"
+  \tempo 70
+  .
+  \ts 4 4
+  2.2.4 2.2.4 2.2.4 2.2.4 |
+  2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 2.2.8 |
+  2.2.2 2.2.2 |
+  2.2.1 |
+  2.2.4 2.2.8 2.2.8 2.2.2 |
+  2.2.8 2.2.8 2.2.4 2.2.4 2.2.4 |
+  2.2.2 2.2.4 2.2.8 2.2.8 |
+  2.2.4 2.2.4 2.2.2 |
+explanationJa: "全音符・2分音符・4分音符・8分音符を、8小節を通してさまざまな組み合わせで復習します。単独の音価だけの小節と、複数の音価が混ざった小節を行き来しながら、どの並びでも1小節が4拍になっていることを確認しましょう。長い音から短い音へ、短い音から長い音へと変化する感覚をつかむのが目標です。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "復習：4分音符4つの小節。基準となるリズムです。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "8分音符だけの小節。8個で4拍、4分音符の倍の細かさになります。"
+  - barIndex: 4
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4分音符→8分音符2つ→2分音符、という組み合わせ。1+0.5+0.5+2でこの小節の4拍になります。"
+  - barIndex: 5
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "8分音符2つから始まり、4分音符3つで締める小節。0.5+0.5+1+1+1で4拍です。"
+  - barIndex: 6
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2分音符→4分音符→8分音符2つ。長い音から短い音へ変化する並びです。"
+difficulty: 3

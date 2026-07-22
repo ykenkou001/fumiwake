@@ -1,0 +1,38 @@
+exerciseId: rhythm.dotted.002
+conceptId: rhythm.dotted
+prerequisites: ["rhythm.basic-values"]
+titleJa: "付点4分音符の定番リズム"
+alphatex: |
+  \title "付点4分音符の定番リズム"
+  \tempo 65
+  .
+  \ts 4 4
+  0.5.4{d} 0.5.8 0.5.4{d} 0.5.8 |
+  0.5.4{d} 0.5.8 0.5.4{d} 0.5.8 |
+  0.5.4{d} 0.5.8 0.5.4 0.5.4 |
+  0.5.4 0.5.4 0.5.4{d} 0.5.8 |
+  0.5.4{d} 0.5.8 0.5.4{d} 0.5.8 |
+  0.5.2{d} 0.5.4 |
+explanationJa: "付点4分音符+8分音符は「長い・短い」という跳ねるようなリズムを作る定番の組み合わせです。付点4分音符は4分音符(1拍)にその半分(0.5拍)を足して1.5拍になり、続く8分音符の0.5拍と合わせてちょうど2拍になります。この譜例ではこの形を繰り返しながら、4分音符や付点2分音符とも組み合わせて確認します。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "付点4分音符。4分音符(1拍)に半分(0.5拍)を足して1.5拍になります。"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "直後の8分音符は0.5拍。付点4分音符の1.5拍と合わせてちょうど2拍です。"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "この小節の後半も同じ「付点4分+8分」の形を繰り返します。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "付点4分音符+8分音符のあと、今度は4分音符2つで小節を締めます。"
+  - barIndex: 5
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "最後は付点2分音符の復習。3拍伸ばしたあと4分音符1つで4拍になります。"
+difficulty: 2
