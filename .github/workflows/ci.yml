@@ -83,7 +83,17 @@ jobs:
         id: keystore
         run: |
           if [ -n "$SIGNING_KEYSTORE_BASE64" ]; then
-            echo "$SIGNING_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/dist.keystore"
+            # Secret を Windows のクリップボード経由で貼り付けると各行末に CR が
+            # 混入し、GNU base64 -d が "invalid input" で落ちる（\n は無視するが \r は
+            # 無視しないため）。行折り返しを含む値でも通るよう、空白・CR・改行を
+            # 除去してから復号する。
+            printf '%s' "$SIGNING_KEYSTORE_BASE64" \
+              | tr -d '[:space:]' \
+              | base64 -d > "$RUNNER_TEMP/dist.keystore"
+            if [ ! -s "$RUNNER_TEMP/dist.keystore" ]; then
+              echo "::error::SIGNING_KEYSTORE_BASE64 のデコード結果が空です。Secret の値を再確認してください。"
+              exit 1
+            fi
             echo "path=$RUNNER_TEMP/dist.keystore" >> "$GITHUB_OUTPUT"
             echo "signed=true" >> "$GITHUB_OUTPUT"
             echo "Signing keystore provided: building a signed release APK."
