@@ -34,6 +34,9 @@ android {
     kotlin {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            // alphaTab's public Kotlin API is annotated @ExperimentalContracts;
+            // opt in module-wide instead of per call site
+            freeCompilerArgs.add("-opt-in=kotlin.contracts.ExperimentalContracts")
         }
     }
 
