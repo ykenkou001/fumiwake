@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -146,14 +147,17 @@ fun ExerciseScreen(
                 )
             }
 
+            // 解説テキストは高さを抑え（必要ならスクロール）、余った縦幅を上の譜面
+            // （weight(1f)）に回して譜面を見やすくする。以前は譜面と解説が weight(1f)
+            // ずつで半々だった。
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .heightIn(max = 132.dp)
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                Text(panelText, style = MaterialTheme.typography.bodyLarge)
+                Text(panelText, style = MaterialTheme.typography.bodyMedium)
             }
 
             Button(

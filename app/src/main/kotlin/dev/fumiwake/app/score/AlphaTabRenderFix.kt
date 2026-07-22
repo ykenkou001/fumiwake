@@ -3,6 +3,19 @@ package dev.fumiwake.app.score
 import alphaTab.AlphaTabView
 
 /**
+ * サステイン音（全音符・タイなど）がマスター音量 1.0 でクリップして歪む
+ * （「ビィィィン」）のを防ぐためのヘッドルーム。全画面共通で使う。
+ */
+const val MASTER_VOLUME: Double = 0.8
+
+/**
+ * オーディオ出力バッファ長。alphaTab 既定は 500ms で、再生カーソルと実際に
+ * 聞こえる音のズレ（カーソル先行）が大きい。詰めて遅延を減らすが、下げすぎると
+ * アンダーラン（音途切れ）になるため 150ms で妥協する。全画面共通で使う。
+ */
+const val AUDIO_BUFFER_MS: Double = 150.0
+
+/**
  * alphaTab 1.8.4 の Android 実装にある初期化競合の回避策。
  *
  * `api.tex()` はレイアウト前に呼ばれると幅 0 でワーカーに描画指示を出し、コアは
