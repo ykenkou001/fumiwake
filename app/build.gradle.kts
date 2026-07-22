@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace = "dev.fumiwake.app"
-    compileSdk = 35
+    // 36 required: androidx.core 1.17 (pulled transitively by alphaTab) refuses compileSdk < 36
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.fumiwake.app"
