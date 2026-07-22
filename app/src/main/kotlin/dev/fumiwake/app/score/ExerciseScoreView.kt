@@ -7,6 +7,7 @@ import alphaTab.model.Beat
 import alphaTab.model.Note
 import alphaTab.synth.PlayerState
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -56,6 +57,18 @@ fun ExerciseScoreView(
         factory = { context ->
             val view = LayoutInflater.from(context)
                 .inflate(R.layout.view_exercise_score, null) as AlphaTabView
+
+            // parent=null の inflate は XML の match_parent (LayoutParams) を捨てるため、
+            // Compose の AndroidView 側で wrap_content 扱いになり AT_MOST で測定される。
+            // すると AlphaTabView 内部の outerScroll が中身（初期サイズ 0 の
+            // AlphaTabRenderSurface）に収縮して実測幅 0 となり、alphaTab は
+            // "width=0" で描画をスキップ、リサイズ再描画も 0→0 で発火せず譜面が
+            // 永遠に真っ白になる（音声は純 Kotlin なので再生だけは動く）。
+            // MATCH_PARENT を明示して Compose が割り当てた実サイズで測定させる。
+            view.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            )
 
             // Same PlayerSettings as the M2a spike: playback must be opted into
             // explicitly (PlayerMode defaults to Disabled). The bundled sonivox
