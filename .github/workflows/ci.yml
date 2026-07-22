@@ -83,12 +83,15 @@ jobs:
         id: keystore
         run: |
           if [ -n "$SIGNING_KEYSTORE_BASE64" ]; then
-            # Secret を Windows のクリップボード経由で貼り付けると各行末に CR が
-            # 混入し、GNU base64 -d が "invalid input" で落ちる（\n は無視するが \r は
-            # 無視しないため）。行折り返しを含む値でも通るよう、空白・CR・改行を
-            # 除去してから復号する。
+            # Secret をブラウザに貼り付ける際、環境によっては base64 以外の文字が
+            # 混入して GNU base64 -d が "invalid input" で落ちることがある:
+            #   - Windows クリップボード由来の CR (\r): base64 -d は \n は無視するが
+            #     \r は無視しない
+            #   - 日本語IME由来の全角スペース(U+3000)やゼロ幅文字: [:space:] では
+            #     除去されない
+            # base64 の正規文字 (A-Za-z0-9+/=) 以外をすべて除去してから復号する。
             printf '%s' "$SIGNING_KEYSTORE_BASE64" \
-              | tr -d '[:space:]' \
+              | tr -cd 'A-Za-z0-9+/=' \
               | base64 -d > "$RUNNER_TEMP/dist.keystore"
             if [ ! -s "$RUNNER_TEMP/dist.keystore" ]; then
               echo "::error::SIGNING_KEYSTORE_BASE64 のデコード結果が空です。Secret の値を再確認してください。"
