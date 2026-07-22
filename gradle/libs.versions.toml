@@ -7,6 +7,11 @@ kaml = "0.104.0"
 kotlinx-coroutines = "1.10.2"
 
 alphatab = "1.8.4"
+# alphaTab 1.8.4 は alphaSkia 3.4.135 を引き込むが、その arm64 ネイティブ
+# ライブラリは 4KB アライメントのため 16KB ページ端末（Android 15+ の新しめの
+# 機種）で描画エンジンがロードできず、楽譜が真っ白になる。3.5.147 で 16KB
+# アライメント済み（API はクラス・メソッドレベルで 3.4.135 と同一）。
+alphaskia = "3.5.147"
 
 compose-bom = "2025.06.00"
 activity-compose = "1.10.1"
@@ -24,6 +29,8 @@ kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
 alphatab = { module = "net.alphatab:alphaTab", version.ref = "alphatab" }
+alphaskia = { module = "net.alphatab:alphaSkia", version.ref = "alphaskia" }
+alphaskia-android = { module = "net.alphatab:alphaSkia-android", version.ref = "alphaskia" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
