@@ -79,10 +79,19 @@ fun ExerciseScoreView(
             settings.player.playerMode = PlayerMode.EnabledSynthesizer
             settings.player.enableCursor = true
             settings.player.enableUserInteraction = true
+            // 既定 500ms は再生カーソルと実際に聞こえる音のズレ（カーソルが先行）を
+            // 大きくする。バッファを詰めて遅延を減らし、カーソルと音を近づける。
+            // 下げすぎるとアンダーラン（音途切れ）になるため 150ms で妥協する。
+            settings.player.bufferTimeInMilliseconds = AUDIO_BUFFER_MS
             view.settings = settings
 
             val api = view.api
             api.updateSettings()
+
+            // 一部エクササイズ（全音符・タイなど長い音が多い譜例）で、サステイン音が
+            // マスター音量 1.0 だとクリップして「ビィィィン」という歪みになる。
+            // ヘッドルームを確保してクリップを防ぐ。
+            api.masterVolume = MASTER_VOLUME
 
             api.error.on { throwable -> currentOnError(throwable) }
             api.playerReady.on { currentOnReady() }
