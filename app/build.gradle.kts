@@ -18,11 +18,30 @@ android {
         versionName = "0.1.${System.getenv("GITHUB_RUN_NUMBER") ?: "dev"}"
     }
 
+    // 配布用の署名鍵は GitHub Secrets 経由で CI が環境変数として渡す
+    // （FUMIWAKE_KEYSTORE_FILE = 復号済み keystore のパス）。鍵はリポジトリに
+    // 置かない。ローカルや Secrets 未設定の CI では null になり、release は
+    // 未署名になる（その場合 CI は debug ビルドを配布する — ci.yml 参照）。
+    val distKeystorePath = System.getenv("FUMIWAKE_KEYSTORE_FILE")
+
+    signingConfigs {
+        if (!distKeystorePath.isNullOrBlank()) {
+            create("dist") {
+                storeFile = file(distKeystorePath)
+                storePassword = System.getenv("FUMIWAKE_STORE_PASSWORD")
+                keyAlias = System.getenv("FUMIWAKE_KEY_ALIAS")
+                // PKCS12 では鍵パスワード = ストアパスワード
+                keyPassword = System.getenv("FUMIWAKE_STORE_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
-            // 配布用の署名は未設定（配布は当面 debug ビルドで行う — ci.yml 参照）。
-            // 署名を固定する場合は GitHub Secrets 経由で signingConfig を追加する。
+            if (!distKeystorePath.isNullOrBlank()) {
+                signingConfig = signingConfigs.getByName("dist")
+            }
         }
     }
 
