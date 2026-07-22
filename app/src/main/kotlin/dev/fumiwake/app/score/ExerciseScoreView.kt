@@ -99,6 +99,10 @@ fun ExerciseScoreView(
             apiState.value = api
             api.tex(exercise.alphatex)
 
+            // alphaTab 初期化競合（幅0でのスキップ後に再描画が発火しない）対策。
+            // 詳細は AlphaTabRenderFix.kt のコメント参照。
+            view.renderWhenSized()
+
             view
         },
         update = { view ->
