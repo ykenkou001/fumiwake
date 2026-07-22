@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">fumiwake</string>
+
+    <!-- M2a spike screen -->
+    <string name="action_play">再生</string>
+    <string name="action_stop">停止</string>
+    <string name="tempo_50">50%</string>
+    <string name="tempo_75">75%</string>
+    <string name="tempo_100">100%</string>
+    <string name="loop_off">ループ OFF</string>
+    <string name="loop_on">ループ ON</string>
+    <string name="status_initializing">初期化中…</string>
 </resources>
