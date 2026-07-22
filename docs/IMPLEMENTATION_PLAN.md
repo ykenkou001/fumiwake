@@ -392,9 +392,21 @@ kotlinx-coroutines-core-jvm で `AlphaTexImporter.initFromString → readScore` 
 | Phase 0 の MusicXML 検証 | 実装初日に go/no-go | Phase 2 冒頭へ後送 | 本環境で実機実行不可。Bundled MVP は alphaTex のみで完結し判定を待つ必要がない。なお描画・再生のスパイク（Phase 0 の 1〜3）は M2a として最優先で実施 |
 | 概念マップ画面 | DAG 順の学習ナビ | topological 順リスト＋状態バッジ（グラフ描画なし）。エクササイズのあるドメインのみ表示 | MVP の学習ナビ機能は満たしつつ UI 実装を最小化 |
 
-## 10. Git / CI 運用
+## 10. Git / CI 運用と配布
 
 - ブランチ: `claude/design-review-overview-ulu50f`（指定ブランチ）に統合コミット
 - 並行エージェントは worktree で作業し、リーダーがレビュー後に統合
 - コミット粒度: マイルストーン単位＋統合修正。メッセージは `M0: ...` / `M1: ...` 形式
-- CI: push 毎に両ジョブ実行。APK artifact の retention は 14 日
+- CI: push 毎に core-test / android-build 両ジョブ実行。APK artifact の retention は 14 日
+
+### 配布（ユーザー要望: スマホで直接ダウンロード→インストール）
+
+- **main へのマージ時**、CI の release ジョブが署名済みリリース APK をビルドし、
+  GitHub Release（タグ `latest`）に `fumiwake.apk` として添付する
+- スマホからの取得 URL（固定）:
+  `https://github.com/ykenkou001/fumiwake/releases/latest/download/fumiwake.apk`
+- 署名鍵はリポジトリにコミットして固定（`app/signing/fumiwake.keystore`）。
+  使い捨て CI ランナーの debug 鍵では毎回署名が変わり上書きインストール不可になるため。
+  **個人配布専用**の割り切り（ストア配布時は鍵を新規作成する）。README に明記
+- `versionCode` は `GITHUB_RUN_NUMBER` から採番し、上書きアップデートを可能にする
+- 開発中ブランチの確認は従来どおり Actions artifact（`app-debug`）を使用
