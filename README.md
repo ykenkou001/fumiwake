@@ -72,9 +72,40 @@ https://github.com/ykenkou001/fumiwake/releases/latest/download/fumiwake.apk
 ダウンロード後、通知またはファイルアプリから APK を開いてインストールします。
 初回のみ「提供元不明のアプリのインストール」をブラウザに許可する必要があります。
 
-> **現状の制約（署名について）**: 当面は CI ランナーが生成する一時鍵による
-> debug 署名で配布するため、**更新版を入れる前に旧バージョンのアンインストールが
-> 必要**です（署名不一致のため上書きインストールが拒否されます。学習進捗も
-> 消えます）。上書きアップデートに対応するには署名鍵の固定が必要で、
-> 鍵を GitHub リポジトリの Secrets に登録して release ビルドに切り替える対応を
-> 予定しています（`docs/IMPLEMENTATION_PLAN.md` §10 参照）。
+### 署名と上書きアップデート
+
+`release` ジョブは、GitHub Secrets に署名鍵が登録されていれば **固定鍵で署名した
+release APK** を配布します（端末で**アンインストール不要の上書きアップデート**が
+可能）。未登録なら CI ランナーの一時鍵による debug 署名で配布します（署名が毎回
+変わるため、更新時は旧版のアンインストールが必要。学習進捗も消えます）。
+
+固定署名を有効にする手順（一度だけ）:
+
+1. 署名鍵を作る（お手元の PC。`keytool` は JDK 付属）:
+
+   ```bash
+   keytool -genkeypair -v \
+     -keystore fumiwake-release.keystore \
+     -alias fumiwake \
+     -keyalg RSA -keysize 2048 -validity 10000 \
+     -storetype PKCS12 \
+     -dname "CN=fumiwake, O=ykenkou001"
+   ```
+
+   実行時にパスワードを設定する。**この鍵ファイルとパスワードは安全に保管・
+   バックアップし、リポジトリにはコミットしないこと**（失うと以後の上書き
+   アップデートができなくなる）。
+
+2. base64 テキストに変換: `base64 fumiwake-release.keystore > keystore.b64.txt`
+
+3. リポジトリの **Settings → Secrets and variables → Actions** で 3 つ登録:
+   - `SIGNING_KEYSTORE_BASE64` = ステップ2の base64 テキスト
+   - `SIGNING_KEY_ALIAS` = `fumiwake`
+   - `SIGNING_STORE_PASSWORD` = ステップ1のパスワード
+
+4. 次の main 更新（または `release` ジョブの再実行）から署名付き APK になる。
+
+> **注意**: 現在 debug 署名版が端末に入っている場合、**最初の署名付き版へ切り替える
+> 1 回だけ**は署名不一致でアンインストールが必要。それ以降は上書きアップデートが
+> できる。個人配布（サイドロード）向けの運用であり、Play ストア配布時は
+> 鍵の管理方針を別途見直すこと。

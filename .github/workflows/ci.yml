@@ -52,14 +52,20 @@ jobs:
   # main への push 時のみ: APK を GitHub Release (tag: latest) に添付する。
   # スマホからは https://github.com/ykenkou001/fumiwake/releases/latest/download/fumiwake.apk
   # で直接ダウンロード→インストールできる。
-  # 当面は debug 署名（ランナー生成の一時鍵）で配布する。署名が毎回変わるため、
-  # 更新時は旧バージョンのアンインストールが必要（README 参照）。署名を固定して
-  # 上書きアップデートに対応する場合は、鍵を GitHub Secrets に登録して
-  # assembleRelease + signingConfig 方式に切り替える。
+  #
+  # 署名: Secrets（SIGNING_KEYSTORE_BASE64 / SIGNING_KEY_ALIAS /
+  # SIGNING_STORE_PASSWORD）が登録済みなら、固定鍵で署名した release APK を
+  # 配布する（端末で上書きアップデート可能）。未登録なら従来どおり debug 署名
+  # （ランナーの一時鍵）で配布する（更新時は旧版のアンインストールが必要）。
+  # 手順は README「スマホへのインストール」を参照。
   release:
     if: github.ref == 'refs/heads/main'
     needs: [core-test, android-build]
     runs-on: ubuntu-latest
+    env:
+      SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+      SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+      SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
@@ -72,11 +78,33 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Assemble APK
-        run: ./gradlew :app:assembleDebug --no-daemon
+      # 署名鍵の Secret があれば復号してファイルに出し、signed=true を立てる。
+      - name: Decode signing keystore (if provided)
+        id: keystore
+        run: |
+          if [ -n "$SIGNING_KEYSTORE_BASE64" ]; then
+            echo "$SIGNING_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/dist.keystore"
+            echo "path=$RUNNER_TEMP/dist.keystore" >> "$GITHUB_OUTPUT"
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+            echo "Signing keystore provided: building a signed release APK."
+          else
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            echo "No signing keystore secret: falling back to a debug-signed APK."
+          fi
 
-      - name: Rename APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk fumiwake.apk
+      - name: Build APK
+        env:
+          FUMIWAKE_KEYSTORE_FILE: ${{ steps.keystore.outputs.path }}
+          FUMIWAKE_KEY_ALIAS: ${{ env.SIGNING_KEY_ALIAS }}
+          FUMIWAKE_STORE_PASSWORD: ${{ env.SIGNING_STORE_PASSWORD }}
+        run: |
+          if [ "${{ steps.keystore.outputs.signed }}" = "true" ]; then
+            ./gradlew :app:assembleRelease --no-daemon
+            cp app/build/outputs/apk/release/app-release.apk fumiwake.apk
+          else
+            ./gradlew :app:assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk fumiwake.apk
+          fi
 
       - name: Publish to GitHub Release (tag latest)
         uses: softprops/action-gh-release@v2
