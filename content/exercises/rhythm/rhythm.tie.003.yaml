@@ -1,0 +1,42 @@
+exerciseId: rhythm.tie.003
+conceptId: rhythm.tie
+prerequisites: ["rhythm.basic-values"]
+titleJa: "タイの総復習"
+alphatex: |
+  \title "タイの総復習"
+  \tempo 70
+  .
+  \ts 4 4
+  3.4.2 -.2 |
+  3.4.4 3.4.4 3.4.4 3.4.4 |
+  3.4.4 3.4.4 3.4.4 -.4 |
+  -.4 3.4.4 3.4.4 3.4.4 |
+  3.4.2 -.2 |
+  3.4.4 3.4.4 3.4.2 |
+explanationJa: "小節の中で完結するタイと、小節線をまたぐタイを組み合わせて総復習します。どちらのタイも「同じ高さの音を弾き直さずに伸ばす」という考え方は同じです。この譜例では2分音符どうしのタイと、4分音符から始まって小節をまたぐタイの両方が登場するので、どこで弾き、どこで弾かないかを確認しながら進めましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2分音符を弾きます。"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "タイでさらに2拍伸ばします。弾き直さず、合計4拍(2+2)音を伸ばします。"
+  - barIndex: 2
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "4分音符を弾いた直後、この音は次の拍、そして次の小節へとタイでつながっていきます。"
+  - barIndex: 2
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "小節内のタイ。直前の音をそのまま1拍伸ばします。"
+  - barIndex: 3
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "小節をまたぐタイの続き。前の小節から鳴り続けている音なので、ここでは弾き直しません。"
+  - barIndex: 4
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "ここでも小節内タイの復習。2分音符+タイで、小節全体を1つの音で満たします。"
+difficulty: 3

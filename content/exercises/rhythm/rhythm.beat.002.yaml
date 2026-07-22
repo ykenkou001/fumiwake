@@ -1,0 +1,42 @@
+exerciseId: rhythm.beat.002
+conceptId: rhythm.beat
+prerequisites: []
+titleJa: "拍の頭を感じる"
+alphatex: |
+  \title "拍の頭を感じる"
+  \tempo 70
+  .
+  \ts 4 4
+  0.4.4 0.4.4 0.4.4 0.4.4 |
+  0.4.4 0.4.4 0.4.4 0.4.4 |
+  0.4.4 0.4.4 0.4.4 0.4.4 |
+  0.4.4 0.4.4 0.4.4 0.4.4 |
+  0.4.4 0.4.4 0.4.4 0.4.4 |
+  0.4.4 0.4.4 0.4.4 0.4.4 |
+explanationJa: "前の譜例より長く、6小節にわたって同じ拍を数え続けます。すべて開放弦の同じ音で、4分音符だけで書かれています。それぞれの小節の1拍目（拍の頭）を意識しながら、6小節を通して「1・2・3・4」を安定したテンポで数えられるか確認しましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "1小節目の1拍目。ここが「拍の頭」、リズムの基準になる瞬間です。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2小節目の頭。前の小節から4拍数えた直後、また1に戻ります。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "3小節目の頭です。"
+  - barIndex: 3
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4小節目の頭です。"
+  - barIndex: 4
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5小節目の頭です。"
+  - barIndex: 5
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6小節目、最後の小節の頭です。"
+difficulty: 2

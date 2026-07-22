@@ -1,0 +1,38 @@
+exerciseId: rhythm.basic-values.002
+conceptId: rhythm.basic-values
+prerequisites: ["rhythm.beat"]
+titleJa: "長さの違う音符を組み合わせる"
+alphatex: |
+  \title "長さの違う音符を組み合わせる"
+  \tempo 65
+  .
+  \ts 4 4
+  2.2.2 2.2.4 2.2.4 |
+  2.2.4 2.2.4 2.2.2 |
+  2.2.8 2.2.8 2.2.8 2.2.8 2.2.4 2.2.4 |
+  2.2.4 2.2.8 2.2.8 2.2.4 2.2.4 |
+  2.2.1 |
+  2.2.2 2.2.2 |
+explanationJa: "1つの小節の中に、長さの違う音符が混ざっても合計は必ず4拍になります。この譜例では2分音符・4分音符・8分音符・全音符を組み合わせた6小節を通して、音価が変わっても拍のまとまりが崩れないことを確認します。それぞれの小節で足し算をしながら数えてみましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2分音符(2拍)から始まり、4分音符(1拍)を2つ続けます。2+1+1でこの小節の4拍になります。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "ここから8分音符が4つ続きます。8分音符4つで合計2拍分です。"
+  - barIndex: 2
+    beatIndex: 4
+    noteIndex: 0
+    noteText: "後半は4分音符2つ。前半の8分音符4つ(2拍)と合わせて4拍になります。"
+  - barIndex: 3
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "4分音符の後に8分音符が2つ。8分音符2つで4分音符1つ分(1拍)と同じ長さです。"
+  - barIndex: 4
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "この小節は全音符1つだけ。前の小節までの細かい音価と対照的に、4拍まるごと伸ばします。"
+difficulty: 2

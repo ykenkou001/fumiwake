@@ -1,0 +1,36 @@
+exerciseId: rhythm.rests.001
+conceptId: rhythm.rests
+prerequisites: ["rhythm.basic-values"]
+titleJa: "休符を数える"
+alphatex: |
+  \title "休符を数える"
+  \tempo 60
+  .
+  \ts 4 4
+  1.1.4 1.1.4 1.1.4 r.4 |
+  1.1.4 r.4 1.1.4 r.4 |
+  1.1.2 r.2 |
+  r.1 |
+explanationJa: "休符は「音を出さない拍」ですが、拍そのものは休符の間も進み続けます。この譜例では4分休符・2分休符・全休符を使い、音を弾かない拍でも心の中で数え続けることを練習します。音が鳴っていない部分こそ、しっかり拍を数えることが大切です。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: null
+    noteText: "4拍目は休符（無音）。音を止めて、心の中で「4」と数えます。"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: null
+    noteText: "2拍目が休符。音を弾いた直後にしっかり止めましょう。"
+  - barIndex: 1
+    beatIndex: 3
+    noteIndex: null
+    noteText: "4拍目も休符。1小節の中に休符が2つ、交互に現れます。"
+  - barIndex: 2
+    beatIndex: 1
+    noteIndex: null
+    noteText: "2分休符。2拍分、音を出さずに待ちます。"
+  - barIndex: 3
+    beatIndex: 0
+    noteIndex: null
+    noteText: "全休符。この小節はまるごと無音ですが、拍は「1・2・3・4」と心の中で数え続けます。"
+difficulty: 1

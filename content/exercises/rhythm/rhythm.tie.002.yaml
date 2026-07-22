@@ -1,0 +1,37 @@
+exerciseId: rhythm.tie.002
+conceptId: rhythm.tie
+prerequisites: ["rhythm.basic-values"]
+titleJa: "小節をまたぐタイ"
+alphatex: |
+  \title "小節をまたぐタイ"
+  \tempo 65
+  .
+  \ts 4 4
+  3.4.4 3.4.4 3.4.4 3.4.4 |
+  -.4 3.4.4 3.4.4 3.4.4 |
+  3.4.4 3.4.4 3.4.4 3.4.4 |
+  3.4.4 3.4.4 3.4.4 3.4.4 |
+  -.4 -.4 3.4.4 3.4.4 |
+explanationJa: "タイは小節線をまたいでも使えます。前の小節の最後の音と、次の小節の最初の音が同じ高さであれば弧線でつながれ、弾き直さずに音を伸ばし続けます。この譜例では小節をまたぐタイを2回登場させ、後半ではタイが2つ連続して合計3拍分音が伸びる様子も確認します。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "この小節最後の4分音符。次の小節の頭とタイでつながります。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "小節をまたぐタイ。前の小節の最後の音をそのまま1拍伸ばすので、この拍では弾き直しません。"
+  - barIndex: 3
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "この小節の最後の音も、次の小節へタイでつながります。"
+  - barIndex: 4
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "前の小節からのタイの続き。まだ弾き直しません。"
+  - barIndex: 4
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "さらにもう1拍タイで伸びます。ここまで合計3拍（元の1拍+タイ2拍）、音が鳴り続けています。"
+difficulty: 2

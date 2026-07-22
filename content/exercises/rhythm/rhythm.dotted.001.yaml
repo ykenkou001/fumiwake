@@ -1,0 +1,28 @@
+exerciseId: rhythm.dotted.001
+conceptId: rhythm.dotted
+prerequisites: ["rhythm.basic-values"]
+titleJa: "付点音符で長さをのばす"
+alphatex: |
+  \title "付点音符で長さをのばす"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.2{d} 0.5.4 |
+  0.5.4 0.5.2{d} |
+  0.5.2{d} 0.5.4 |
+  0.5.1 |
+explanationJa: "付点は、音符の右に付けて「元の長さの半分をさらに足す」記号です。付点2分音符は2分音符(2拍)にその半分(1拍)を足して、合計3拍になります。この譜例では付点2分音符と4分音符を組み合わせ、最後は全音符で締めくくって長さの感覚を確認します。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "付点2分音符。2分音符(2拍)にその半分(1拍)を足して、合計3拍伸ばします。"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "残りの1拍分を4分音符で締めくくります。3拍+1拍でこの小節の4拍になります。"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "今度は小節の後半に付点2分音符。先に4分音符で1拍、その後に3拍伸ばします。"
+difficulty: 1
