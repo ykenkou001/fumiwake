@@ -81,6 +81,11 @@ dependencies {
     implementation(libs.appcompat)
 
     implementation(libs.alphatab)
+    // alphaTab が引き込む alphaSkia 3.4.135 を 16KB ページ対応版に押し上げる
+    // （Gradle の競合解決は新しい方を採用する）。libs.versions.toml の
+    // alphaskia のコメント参照。
+    implementation(libs.alphaskia)
+    implementation(libs.alphaskia.android)
     implementation(libs.kaml)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.core)
