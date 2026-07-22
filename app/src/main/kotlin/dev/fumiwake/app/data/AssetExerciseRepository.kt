@@ -12,10 +12,12 @@ import kotlinx.coroutines.withContext
  * Loads the bundled exercise [Catalog] from APK assets.
  *
  * `:app`'s `sourceSets["main"].assets.srcDirs("../content/exercises")` (see
- * app/build.gradle.kts) publishes `content/exercises/**​/*.yaml` under asset paths like
+ * app/build.gradle.kts) publishes every bundled exercise YAML under asset paths like
  * `rhythm/rhythm.beat.001.yaml` — the assets root itself contains only domain
  * directories (docs/IMPLEMENTATION_PLAN.md §2), so this recurses one or more levels to
  * find every `.yaml` file regardless of how many domains are bundled.
+ * (Note: no glob pattern in this comment — Kotlin block comments nest, so a literal
+ * slash-star inside a doc comment opens a new comment and breaks the whole file.)
  *
  * All IO happens in [load], never in the constructor.
  */

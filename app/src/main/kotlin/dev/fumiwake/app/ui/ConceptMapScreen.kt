@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package dev.fumiwake.app.ui
 
 import android.content.Intent
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -14,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -64,9 +66,9 @@ fun ConceptMapScreen(
                         modifier = Modifier.padding(16.dp),
                     )
                 }
-                val concepts = remember(domain, progressTick) {
-                    appState.catalog.conceptsInDomain(domain)
-                }
+                // LazyListScope content is not a composable context, so remember{} is
+                // illegal here; the lookup is cheap and pure, so recompute directly.
+                val concepts = appState.catalog.conceptsInDomain(domain)
                 items(concepts, key = { it.id }) { concept ->
                     ConceptCard(
                         concept = concept,
