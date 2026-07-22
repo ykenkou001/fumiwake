@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import dev.fumiwake.app.score.renderWhenSized
 import dev.fumiwake.core.music.NoteNames
 
 /**
@@ -149,6 +150,10 @@ class SpikeActivity : ComponentActivity() {
 
         tvStatus.text = "Loading score..."
         api.tex(spikeAlphaTex)
+
+        // alphaTab 初期化競合（幅0でのスキップ後に再描画が発火しない）対策。
+        // 詳細は dev.fumiwake.app.score.AlphaTabRenderFix.kt のコメント参照。
+        alphaTabView.renderWhenSized()
     }
 
     private fun showNoteInfo(tvStatus: TextView, note: Note) {

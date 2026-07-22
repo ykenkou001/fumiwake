@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -85,6 +86,21 @@ fun ConceptMapScreen(
                 ) {
                     Text("デバッグ: スパイク画面")
                 }
+            }
+            item(key = "version-footer") {
+                // versionName は CI が 0.1.<ラン番号> で採番する（app/build.gradle.kts）。
+                // 端末に入っているビルドがどの CI ランのものか、配布トラブル時に
+                // ここを見れば特定できる。
+                val versionName = remember {
+                    runCatching {
+                        context.packageManager.getPackageInfo(context.packageName, 0).versionName
+                    }.getOrNull() ?: "不明"
+                }
+                Text(
+                    text = "バージョン: $versionName",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                )
             }
         }
     }
