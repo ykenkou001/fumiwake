@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">fumiwake</string>
+    <string name="spike_activity_label">M2a スパイク画面</string>
 
     <!-- M2a spike screen -->
     <string name="action_play">再生</string>

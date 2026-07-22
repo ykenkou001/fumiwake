@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.alphatab)
     implementation(libs.kaml)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(libs.junit4)
 }

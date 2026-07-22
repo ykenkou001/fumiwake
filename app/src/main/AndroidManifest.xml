@@ -14,6 +14,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".SpikeActivity"
+            android:exported="false"
+            android:label="@string/spike_activity_label" />
     </application>
 
 </manifest>
