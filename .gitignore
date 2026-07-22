@@ -22,3 +22,6 @@ tools/texcheck/lib/
 
 # OS
 .DS_Store
+
+# Claude Code session-local files (worktrees, local settings)
+.claude/
