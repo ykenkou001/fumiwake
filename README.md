@@ -58,3 +58,23 @@ non-zero if any file fails to parse.
 (no Android SDK). Debug APKs are built by the `android-build` CI job on every
 push and uploaded as a GitHub Actions artifact named `app-debug`
 (14-day retention) — download it from the workflow run's Summary page.
+
+## スマホへのインストール（main マージ後）
+
+main ブランチにマージされると、CI の `release` ジョブが署名済み APK をビルドし、
+GitHub Release（タグ `latest`）に添付します。スマホのブラウザで次の URL を開くと
+直接ダウンロードできます：
+
+```
+https://github.com/ykenkou001/fumiwake/releases/latest/download/fumiwake.apk
+```
+
+ダウンロード後、通知またはファイルアプリから APK を開いてインストールします。
+初回のみ「提供元不明のアプリのインストール」をブラウザに許可する必要があります。
+
+> **現状の制約（署名について）**: 当面は CI ランナーが生成する一時鍵による
+> debug 署名で配布するため、**更新版を入れる前に旧バージョンのアンインストールが
+> 必要**です（署名不一致のため上書きインストールが拒否されます。学習進捗も
+> 消えます）。上書きアップデートに対応するには署名鍵の固定が必要で、
+> 鍵を GitHub リポジトリの Secrets に登録して release ビルドに切り替える対応を
+> 予定しています（`docs/IMPLEMENTATION_PLAN.md` §10 参照）。

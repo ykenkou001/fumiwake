@@ -12,6 +12,17 @@ android {
         applicationId = "dev.fumiwake.app"
         minSdk = 26
         targetSdk = 35
+        // CI 採番で上書きアップデートを可能にする（ローカルビルドは 1）
+        versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
+        versionName = "0.1.${System.getenv("GITHUB_RUN_NUMBER") ?: "dev"}"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            // 配布用の署名は未設定（配布は当面 debug ビルドで行う — ci.yml 参照）。
+            // 署名を固定する場合は GitHub Secrets 経由で signingConfig を追加する。
+        }
     }
 
     compileOptions {

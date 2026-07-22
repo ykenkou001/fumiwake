@@ -401,12 +401,16 @@ kotlinx-coroutines-core-jvm で `AlphaTexImporter.initFromString → readScore` 
 
 ### 配布（ユーザー要望: スマホで直接ダウンロード→インストール）
 
-- **main へのマージ時**、CI の release ジョブが署名済みリリース APK をビルドし、
+- **main へのマージ時**、CI の release ジョブが APK をビルドし、
   GitHub Release（タグ `latest`）に `fumiwake.apk` として添付する
 - スマホからの取得 URL（固定）:
   `https://github.com/ykenkou001/fumiwake/releases/latest/download/fumiwake.apk`
-- 署名鍵はリポジトリにコミットして固定（`app/signing/fumiwake.keystore`）。
-  使い捨て CI ランナーの debug 鍵では毎回署名が変わり上書きインストール不可になるため。
-  **個人配布専用**の割り切り（ストア配布時は鍵を新規作成する）。README に明記
-- `versionCode` は `GITHUB_RUN_NUMBER` から採番し、上書きアップデートを可能にする
+- `versionCode` は `GITHUB_RUN_NUMBER` から採番
+- **署名は当面 debug 署名（ランナー生成の一時鍵）**。毎回署名が変わるため
+  更新時は旧版のアンインストールが必要（進捗データも消える）。
+  平文パスワード付き鍵をリポジトリに含める方式はセキュリティポリシー上
+  採用しない。**上書きアップデート対応はユーザーの選択待ち**:
+  (a) ユーザーが keytool で鍵を作成し GitHub Secrets（`KEYSTORE_BASE64` 等）に
+  登録 → CI が復号して release ビルドに署名（標準的で安全。推奨）
+  (b) 現状のまま（スパイク期はデータ消失の実害が小さい）
 - 開発中ブランチの確認は従来どおり Actions artifact（`app-debug`）を使用
