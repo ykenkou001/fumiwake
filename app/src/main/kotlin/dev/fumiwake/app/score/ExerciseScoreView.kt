@@ -79,10 +79,9 @@ fun ExerciseScoreView(
             settings.player.playerMode = PlayerMode.EnabledSynthesizer
             settings.player.enableCursor = true
             settings.player.enableUserInteraction = true
-            // 既定 500ms は再生カーソルと実際に聞こえる音のズレ（カーソルが先行）を
-            // 大きくする。バッファを詰めて遅延を減らし、カーソルと音を近づける。
-            // 下げすぎるとアンダーラン（音途切れ）になるため 150ms で妥協する。
-            settings.player.bufferTimeInMilliseconds = AUDIO_BUFFER_MS
+            // bufferTimeInMilliseconds は alphaTab 既定（500ms）のまま使う。150ms まで
+            // 詰めるとバッファ不足でオーディオ出力がアンダーランして復帰せず、音が止まり、
+            // 実再生サンプル数で駆動される再生カーソルも途中で凍結する回帰が起きたため。
             view.settings = settings
 
             val api = view.api
