@@ -118,5 +118,12 @@ fun ExerciseScoreView(
             api.playbackSpeed = playbackSpeed.toDouble()
             api.isLooping = isLooping
         },
+        // コンポジション離脱（画面を離れる／エクササイズ切替）時にプレイヤーと
+        // シンセ（オーディオスレッド・サウンドフォント等）を明示的に解放する。
+        // これが無いとビュー detach 頼みになり、リソースが残るリークの懸念がある。
+        // runCatching で二重破棄・未初期化状態を吸収する。破棄後に detach 済みの
+        // ビューへ renderWhenSized 経由で api.render() が呼ばれることは、
+        // 同リスナーの isAttachedToWindow ガードにより起きない。
+        onRelease = { view -> runCatching { view.api.destroy() } },
     )
 }
