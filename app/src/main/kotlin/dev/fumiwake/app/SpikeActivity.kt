@@ -33,6 +33,9 @@ class SpikeActivity : ComponentActivity() {
 
     private var isLooping = false
 
+    // onDestroy でプレイヤー／シンセを解放するために保持する。
+    private var alphaTabView: AlphaTabView? = null
+
     // Hardcoded alphaTex, built from the verified syntax in docs/alphatab-api-notes.md:
     // notes are `fret.string.duration`, rests `r.duration`, dotted notes `{d}`, ties
     // `-.duration`, time signature `\ts <num> <den>`, bar lines `|`. 4 bars in 4/4,
@@ -50,6 +53,7 @@ class SpikeActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
 
         val alphaTabView = findViewById<AlphaTabView>(R.id.alphaTabView)
+        this.alphaTabView = alphaTabView
         val btnPlayPause = findViewById<Button>(R.id.btnPlayPause)
         val btnTempo50 = findViewById<Button>(R.id.btnTempo50)
         val btnTempo75 = findViewById<Button>(R.id.btnTempo75)
@@ -159,6 +163,15 @@ class SpikeActivity : ComponentActivity() {
         // alphaTab 初期化競合（幅0でのスキップ後に再描画が発火しない）対策。
         // 詳細は dev.fumiwake.app.score.AlphaTabRenderFix.kt のコメント参照。
         alphaTabView.renderWhenSized()
+    }
+
+    override fun onDestroy() {
+        // エクササイズ画面（ExerciseScoreView.onRelease）と方針を揃え、プレイヤーと
+        // シンセ（オーディオスレッド等）を明示的に解放する。runCatching で
+        // 未初期化／二重破棄を吸収。
+        runCatching { alphaTabView?.api?.destroy() }
+        alphaTabView = null
+        super.onDestroy()
     }
 
     private fun showNoteInfo(tvStatus: TextView, note: Note) {
