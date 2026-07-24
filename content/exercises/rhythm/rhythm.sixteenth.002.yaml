@@ -1,0 +1,28 @@
+exerciseId: rhythm.sixteenth.002
+conceptId: rhythm.sixteenth
+prerequisites: ["rhythm.basic-values"]
+titleJa: "付点8分＋16分のリズム"
+alphatex: |
+  \title "付点8分＋16分のリズム"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.8{d} 0.5.16 0.5.8{d} 0.5.16 0.5.4 0.5.4 |
+  0.5.4 0.5.4 0.5.8{d} 0.5.16 0.5.8{d} 0.5.16 |
+  0.5.8{d} 0.5.16 0.5.8{d} 0.5.16 0.5.8{d} 0.5.16 0.5.8{d} 0.5.16 |
+  0.5.1 |
+explanationJa: "付点8分音符と16分音符の組み合わせは、行進やギターのストロークによく出てくる「タッカ・タッカ」というはねたリズムです。付点8分(0.75拍)＋16分(0.25拍)でちょうど1拍になります。長い音のあとに短い音が続く独特のノリを、16分音符の細かい刻みの中に位置づけて感じ取りましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "付点8分音符。8分音符(0.5拍)にその半分(0.25拍)を足して0.75拍。「タッ」にあたる長めの音です。"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "16分音符。直前の付点8分と合わせて1拍(0.75+0.25)。「カ」にあたる短い音で、次の拍へ弾みをつけます。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "「タッカ・タッカ」が4拍続きます。付点8分と16分のペアを1拍のまとまりとして捉えると数えやすくなります。"
+difficulty: 2

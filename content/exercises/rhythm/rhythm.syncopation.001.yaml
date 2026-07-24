@@ -1,0 +1,28 @@
+exerciseId: rhythm.syncopation.001
+conceptId: rhythm.syncopation
+prerequisites: ["rhythm.tie", "rhythm.sixteenth"]
+titleJa: "裏拍にアクセント（シンコペーション）"
+alphatex: |
+  \title "裏拍にアクセント（シンコペーション）"
+  \tempo 66
+  .
+  \ts 4 4
+  0.5.8 2.5.4 2.5.4 2.5.4 0.5.8 |
+  0.5.4 0.5.4 0.5.4 0.5.4 |
+  0.5.8 2.5.4 3.5.4 2.5.4 0.5.8 |
+  0.5.1 |
+explanationJa: "シンコペーションは、強い表拍(1・2・3・4)に来るはずのアクセントを、わざと裏拍(拍の間)にずらす仕掛けです。1・3小節目は内側の4分音符が裏拍から始まり、次の表拍をまたいで鳴ります。裏拍の音は高さを変えてあるので、2小節目(表拍ちょうどの4分音符)と聴き比べてずれを確かめましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "1拍目の頭(表拍)の8分音符。この直後から拍がずれ始めます。"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "1拍目の裏(「1と」の“と”)から始まる4分音符。次の表拍をまたいで鳴り、表拍が“抜ける”のがシンコペーションです。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "比較用。ここは4分音符が1・2・3・4の表拍ちょうどに並びます。1小節目と聴き比べて。"
+difficulty: 3

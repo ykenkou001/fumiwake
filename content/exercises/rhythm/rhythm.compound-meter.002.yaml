@@ -1,0 +1,28 @@
+exerciseId: rhythm.compound-meter.002
+conceptId: rhythm.compound-meter
+prerequisites: ["rhythm.triplet"]
+titleJa: "6/8の中でリズムを変える"
+alphatex: |
+  \title "6/8の中でリズムを変える"
+  \tempo 66
+  .
+  \ts 6 8
+  0.5.8 0.5.8 0.5.8 2.5.4 2.5.8 |
+  0.5.4 0.5.8 2.5.8 2.5.8 2.5.8 |
+  0.5.8 0.5.4 2.5.8 2.5.4 |
+  0.5.4{d} 0.5.4{d} |
+explanationJa: "6/8の「3つ＋3つ」の枠は保ったまま、各まとまりの中身は変えられます。8分3つ、4分＋8分(長短)、8分＋4分(短長)は、どれも8分3つ分＝1つのまとまりです。まとまりの頭で音の高さが変わるので、中身が変わっても2グループの骨組みは同じだと確認できます。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "後半グループが「4分＋8分」の長短に。長さの内訳は変わっても、合計は8分3つ分のままです。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "前半グループが「4分＋8分」。同じ長短パターンが小節の頭に来ています。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "前半が「8分＋4分」の短長。長短の逆パターンでも、やはり8分3つ分で1まとまりです。"
+difficulty: 3

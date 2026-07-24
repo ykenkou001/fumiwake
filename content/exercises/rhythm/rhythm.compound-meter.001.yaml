@@ -1,0 +1,28 @@
+exerciseId: rhythm.compound-meter.001
+conceptId: rhythm.compound-meter
+prerequisites: ["rhythm.triplet"]
+titleJa: "6/8拍子を2つのまとまりで感じる"
+alphatex: |
+  \title "6/8拍子を2つのまとまりで感じる"
+  \tempo 66
+  .
+  \ts 6 8
+  0.5.8 0.5.8 0.5.8 2.5.8 2.5.8 2.5.8 |
+  0.5.4{d} 2.5.4{d} |
+  0.5.4 0.5.8 2.5.4 2.5.8 |
+  0.5.4{d} 0.5.4{d} |
+explanationJa: "6/8は8分音符を6つ数えますが、実際は「3つ＋3つ」の2つのまとまりで感じます。1拍のまとまり＝付点4分音符です。前半3つと後半3つで音の高さを変えてあるので、2つのグループが耳で分かれて聞こえます。「1・2・3／4・5・6」と大きく2つに振ってみましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "前半グループの8分音符3つ。「1・2・3」で1つ目のまとまりです。"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "後半グループの頭。ここから「4・5・6」の2つ目のまとまり。音の高さが変わるので境目が分かります。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "付点4分音符。8分3つ分＝1つのまとまりの長さ。6/8はこの拍が2つで1小節です。"
+difficulty: 3
