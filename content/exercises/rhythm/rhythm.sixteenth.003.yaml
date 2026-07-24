@@ -1,0 +1,28 @@
+exerciseId: rhythm.sixteenth.003
+conceptId: rhythm.sixteenth
+prerequisites: ["rhythm.basic-values"]
+titleJa: "16分と8分を混ぜる"
+alphatex: |
+  \title "16分と8分を混ぜる"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.16 0.5.16 0.5.8 0.5.8 0.5.16 0.5.16 0.5.4 0.5.4 |
+  0.5.8 0.5.16 0.5.16 0.5.16 0.5.16 0.5.8 0.5.4 0.5.4 |
+  0.5.16 0.5.16 0.5.8 0.5.8 0.5.16 0.5.16 0.5.8 0.5.8 0.5.4 |
+  0.5.1 |
+explanationJa: "実際の楽譜では16分音符と8分音符が1拍の中で混ざります。「16分・16分・8分」も「8分・16分・16分」も、合わせて1拍(0.25+0.25+0.5)です。まず1拍を16分4つに感じ取り、そのうち2つ分がつながって8分になる、と捉えると混在パターンも正確に読めます。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "16分・16分・8分の組。短い音2つのあとに8分(16分2つ分)が続き、合わせて1拍です。"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "この8分音符は16分音符2つ分の長さ。前の16分2つと合わせて1拍のまとまりになります。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "今度は「8分・16分・16分」。長い音が先、短い音2つが後。1拍の中での順番が変わっても合計は同じ1拍です。"
+difficulty: 2

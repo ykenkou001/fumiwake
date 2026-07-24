@@ -1,0 +1,32 @@
+exerciseId: rhythm.sixteenth.001
+conceptId: rhythm.sixteenth
+prerequisites: ["rhythm.basic-values"]
+titleJa: "16分音符を刻む"
+alphatex: |
+  \title "16分音符を刻む"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.4 0.5.4 0.5.8 0.5.8 0.5.8 0.5.8 |
+  0.5.16 0.5.16 0.5.16 0.5.16 0.5.8 0.5.8 0.5.4 0.5.4 |
+  0.5.16 0.5.16 0.5.16 0.5.16 0.5.16 0.5.16 0.5.16 0.5.16 0.5.4 0.5.4 |
+  0.5.1 |
+explanationJa: "16分音符は8分音符をさらに半分にした音符で、1拍(4分音符)を4つに均等に割ります。数え方は「1・e・&・a（イ・ー・エ・ア）」のように1拍を4等分します。この譜例では4分→8分→16分と刻みを細かくしていき、音の数が2倍・4倍になっても1小節(4拍)の長さは変わらないことを確認します。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "8分音符。1拍を2つに分けた長さです。次の小節で登場する16分音符と比べる基準にします。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "16分音符。8分音符をさらに半分にした、1拍を4つに割った長さです。「1・e・&・a」の最初の1つ分。"
+  - barIndex: 1
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "16分音符4つでちょうど1拍。ここで1拍目が終わり、2拍目に入ります。"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "16分音符が8つ続きます。8つで2拍分。細かくても1つ1つを均等に刻みましょう。"
+difficulty: 1

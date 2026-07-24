@@ -1,0 +1,28 @@
+exerciseId: rhythm.triplet.002
+conceptId: rhythm.triplet
+prerequisites: ["rhythm.basic-values"]
+titleJa: "8分と3連符を弾き分ける"
+alphatex: |
+  \title "8分と3連符を弾き分ける"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.8 0.5.8 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.4 0.5.4 |
+  0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8 0.5.8 0.5.4 0.5.4 |
+  0.5.8 0.5.8 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8 0.5.8 0.5.4 |
+  0.5.1 |
+explanationJa: "8分音符は1拍を2つに、3連符は1拍を3つに割ります。同じ「1拍」でも、2分割の8分は「タ・タ」、3分割の3連符は「タ・タ・タ」とテンポ感が変わります。この譜例では8分と3連符を隣り合わせに置き、2つと3つの割り方を耳と指で区別する練習をします。混同しやすいので、3連符では必ず「3」を意識しましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "8分音符2つで1拍。「タ・タ」と2等分します。"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "3連符。同じ1拍を「タ・タ・タ」と3等分。直前の8分(2つ)より1つ多く詰め込むぶん、少し速く感じます。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "今度は3連符が先。3等分の感覚を作ってから、次の8分(2等分)に切り替えます。"
+difficulty: 2

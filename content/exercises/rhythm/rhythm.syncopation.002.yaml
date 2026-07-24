@@ -1,0 +1,24 @@
+exerciseId: rhythm.syncopation.002
+conceptId: rhythm.syncopation
+prerequisites: ["rhythm.tie", "rhythm.sixteenth"]
+titleJa: "タイで生まれるシンコペーション"
+alphatex: |
+  \title "タイで生まれるシンコペーション"
+  \tempo 66
+  .
+  \ts 4 4
+  0.5.4 2.5.8 2.5.8 -.4 0.5.4 |
+  0.5.4 0.5.4 0.5.4 0.5.4 |
+  0.5.4 2.5.8 2.5.8 -.4 0.5.4 |
+  0.5.1 |
+explanationJa: "シンコペーションはタイでも作れます。1・3小節目では、2拍目の裏で弾いた音をタイで3拍目までのばすため、3拍目の頭を弾き直しません。強い拍の頭が“抜ける”ことでリズムが前に食い込みます。2小節目(表拍どおりの4分音符)と聴き比べましょう。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "2拍目の裏で弾く8分音符。ここからタイで先へのばします。"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "タイの続き。弾き直さず3拍目までのばすので、本来強い3拍目の頭が“抜け”てシンコペーションになります。"
+difficulty: 3

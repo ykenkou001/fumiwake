@@ -1,0 +1,32 @@
+exerciseId: rhythm.triplet.001
+conceptId: rhythm.triplet
+prerequisites: ["rhythm.basic-values"]
+titleJa: "3連符で1拍を3つに割る"
+alphatex: |
+  \title "3連符で1拍を3つに割る"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.4 0.5.4 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.4 |
+  0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.4 0.5.4 |
+  0.5.4 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.8{tu 3} 0.5.4 |
+  0.5.1 |
+explanationJa: "3連符は1拍を均等に3つに割った音符です。8分音符は1拍を2つに割りますが、3連符は同じ1拍を3つに割るので、「タ・タ・タ」と3つで1拍を数えます。譜面上は3つの音符を「3」の数字で束ねて表します。この譜例では4分音符(1拍を1つ)と3連符(1拍を3つ)を並べ、同じ1拍でも割り方が違うことを体で覚えます。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4分音符。1拍まるごと1つの音。次の3連符と長さを比べる基準です。"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "3連符の1つ目。ここから3つの音で1拍を均等に埋めます。「3」と数え始めましょう。"
+  - barIndex: 0
+    beatIndex: 4
+    noteIndex: 0
+    noteText: "3連符の3つ目。ここで1拍が終わります。3つとも同じ長さになるよう均等に。"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "3連符が2拍続きます。1拍3つ×2で、転がすようになめらかに刻みましょう。"
+difficulty: 2
