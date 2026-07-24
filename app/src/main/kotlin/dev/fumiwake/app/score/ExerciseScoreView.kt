@@ -26,14 +26,17 @@ import dev.fumiwake.core.exercise.Exercise
  * The view and its `api` are created once, in [AndroidView]'s `factory`; [apiState] is
  * then populated with the live [AlphaTabApiBase] so the caller (ExerciseScreen) can drive
  * playback (play/pause, tempo, loop) imperatively from button/slider callbacks.
- * [playbackSpeed] and [isLooping] changes are re-applied on every recomposition via the
- * `update` block, so the caller can just treat them as normal Compose state.
+ * [playbackSpeed], [isLooping], [metronomeEnabled] and [countInEnabled] changes are
+ * re-applied on every recomposition via the `update` block, so the caller can just treat
+ * them as normal Compose state.
  */
 @Composable
 fun ExerciseScoreView(
     exercise: Exercise,
     playbackSpeed: Float,
     isLooping: Boolean,
+    metronomeEnabled: Boolean,
+    countInEnabled: Boolean,
     apiState: MutableState<AlphaTabApiBase<AlphaTabView>?>,
     onReady: () -> Unit,
     onNoteTap: (Note) -> Unit,
@@ -51,6 +54,10 @@ fun ExerciseScoreView(
     val currentOnBeatTap by rememberUpdatedState(onBeatTap)
     val currentOnPlayerStateChanged by rememberUpdatedState(onPlayerStateChanged)
     val currentOnError by rememberUpdatedState(onError)
+    // playerReady は factory 実行よりあとに発火するため、そこで読む値も最新を指す
+    // 必要がある（下記 playerReady ハンドラでのクリック設定の再適用に使う）。
+    val currentMetronomeEnabled by rememberUpdatedState(metronomeEnabled)
+    val currentCountInEnabled by rememberUpdatedState(countInEnabled)
 
     AndroidView(
         modifier = modifier,
@@ -93,7 +100,13 @@ fun ExerciseScoreView(
             api.masterVolume = MASTER_VOLUME
 
             api.error.on { throwable -> currentOnError(throwable) }
-            api.playerReady.on { currentOnReady() }
+            api.playerReady.on {
+                // クリック／カウントインの音量は内部の IAlphaSynth へ委譲される。シンセ
+                // 生成前にセットした値が取りこぼされても、ready 後のここで必ず正しい値へ
+                // 収束させる（docs/METRONOME_PLAN.md §2.3 / R3）。
+                api.applyClickVolumes(currentMetronomeEnabled, currentCountInEnabled)
+                currentOnReady()
+            }
             api.playerStateChanged.on { args -> currentOnPlayerStateChanged(args.state) }
             // noteMouseDown / beatMouseDown: alphaTab's own AndroidViewContainer already
             // converts the touch event into a boundsLookup hit internally (see
@@ -103,6 +116,7 @@ fun ExerciseScoreView(
 
             api.playbackSpeed = playbackSpeed.toDouble()
             api.isLooping = isLooping
+            api.applyClickVolumes(metronomeEnabled, countInEnabled)
 
             apiState.value = api
             api.tex(exercise.alphatex)
@@ -117,6 +131,7 @@ fun ExerciseScoreView(
             val api = view.api
             api.playbackSpeed = playbackSpeed.toDouble()
             api.isLooping = isLooping
+            api.applyClickVolumes(metronomeEnabled, countInEnabled)
         },
         // コンポジション離脱（画面を離れる／エクササイズ切替）時にプレイヤーと
         // シンセ（オーディオスレッド・サウンドフォント等）を明示的に解放する。

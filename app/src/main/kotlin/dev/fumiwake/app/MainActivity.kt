@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import dev.fumiwake.app.data.AssetExerciseRepository
+import dev.fumiwake.app.data.PlaybackPreferences
 import dev.fumiwake.app.data.SqliteProgressStore
 import dev.fumiwake.app.ui.FumiwakeNavHost
 import dev.fumiwake.core.concept.ConceptGraph
@@ -37,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
         val repository = AssetExerciseRepository(applicationContext)
         val progressStore = SqliteProgressStore(applicationContext)
+        val playbackPreferences = PlaybackPreferences(applicationContext)
 
         setContent {
             var appState by remember { mutableStateOf<AppState?>(null) }
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
                 val graph = ConceptGraph.bundled()
                 val catalog = repository.load()
                 val evaluator = ProgressEvaluator(graph, catalog, progressStore)
-                appState = AppState(graph, catalog, evaluator)
+                appState = AppState(graph, catalog, evaluator, playbackPreferences)
             }
 
             MaterialTheme {
