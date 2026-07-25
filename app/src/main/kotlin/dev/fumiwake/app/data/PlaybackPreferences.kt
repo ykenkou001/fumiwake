@@ -35,26 +35,34 @@ class PlaybackPreferences(context: Context) {
         set(value) = prefs.edit().putBoolean(KEY_COUNT_IN, value).apply()
 
     /**
-     * 再生カーソルの表示を遅らせる量（ミリ秒）。
+     * オーディオバッファ長（ミリ秒）。**音の途切れと再生カーソルのズレのトレードオフ点**
+     * （docs/AUDIO_DEFECT_PLAN.md §29）。
      *
-     * カーソルは実際に耳に届く音より先行する。Bluetooth では伝送遅延が上乗せされ、
-     * その量は機種・コーデックによって違うので、ユーザーが自分の環境に合わせて調整する
-     * （docs/AUDIO_DEFECT_PLAN.md §25）。既定 0 = 補正なし。
+     * 大きいほど音が途切れにくいがカーソルが音より先行し、小さいほどカーソルは合うが
+     * Bluetooth でうねり・途切れが出る。適切な値は出力先（スピーカー／Bluetooth）や
+     * 機種によって変わり、こちらから決め打ちできないためユーザーが調整する。
      */
-    var cursorDelayMs: Int
-        get() = prefs.getInt(KEY_CURSOR_DELAY, DEFAULT_CURSOR_DELAY_MS)
-        set(value) = prefs.edit().putInt(KEY_CURSOR_DELAY, value.coerceIn(0, MAX_CURSOR_DELAY_MS)).apply()
+    var audioBufferMs: Int
+        get() = prefs.getInt(KEY_AUDIO_BUFFER, DEFAULT_AUDIO_BUFFER_MS)
+        set(value) = prefs.edit()
+            .putInt(KEY_AUDIO_BUFFER, value.coerceIn(MIN_AUDIO_BUFFER_MS, MAX_AUDIO_BUFFER_MS))
+            .apply()
 
     companion object {
-        /** カーソル補正スライダーの上限。Bluetooth の遅延が概ね収まる範囲。 */
-        const val MAX_CURSOR_DELAY_MS = 400
+        /** 下限。これ未満はアンダーランから復帰せず無音・カーソル凍結を招いた実績がある。 */
+        const val MIN_AUDIO_BUFFER_MS = 300
+
+        /** 上限。これ以上厚くしてもカーソルのズレが増えるだけで実用にならない。 */
+        const val MAX_AUDIO_BUFFER_MS = 1500
+
+        /** 既定。Bluetooth のうねりを抑えつつズレを抑える妥協点（実機で確認した値）。 */
+        const val DEFAULT_AUDIO_BUFFER_MS = 700
 
         private const val PREFS_NAME = "playback_prefs"
         private const val KEY_METRONOME = "metronome_enabled"
         private const val KEY_COUNT_IN = "count_in_enabled"
-        private const val KEY_CURSOR_DELAY = "cursor_delay_ms"
+        private const val KEY_AUDIO_BUFFER = "audio_buffer_ms"
         private const val DEFAULT_METRONOME = false
         private const val DEFAULT_COUNT_IN = false
-        private const val DEFAULT_CURSOR_DELAY_MS = 0
     }
 }

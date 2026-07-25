@@ -15,8 +15,12 @@ import alphaTab.synth.PlayerState
 const val MASTER_VOLUME: Double = 0.8
 
 /**
- * alphaTab の内部オーディオバッファ長。**音の途切れと再生カーソルのズレのトレードオフ点**
- * を決める値で、実機フィードバックで調整する（docs/AUDIO_DEFECT_PLAN.md §20）。
+ * オーディオバッファ長の既定値。**エクササイズ画面ではユーザーが画面から調整する**ので
+ * （[dev.fumiwake.app.data.PlaybackPreferences.audioBufferMs]）、この定数を使うのは
+ * 設定 UI を持たないスパイク画面（[dev.fumiwake.app.SpikeActivity]）だけ。
+ *
+ * この値は**音の途切れと再生カーソルのズレのトレードオフ点**を決める
+ * （docs/AUDIO_DEFECT_PLAN.md §20）。
  *
  * alphaTab 1.8.4 は `AudioTrack` を **4096 バイト固定**（ステレオ float で 512 フレーム
  * ＝ 44.1kHz で約 11.6ms）で生成し、`AudioTrack.getMinBufferSize()` を参照しない。
