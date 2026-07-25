@@ -18,7 +18,13 @@ class PlaybackPreferences(context: Context) {
 
     private val prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    /** クリック（メトロノーム）を鳴らすか。既定 ON — リズム領域が本アプリの最優先のため。 */
+    /**
+     * クリック（メトロノーム）を鳴らすか。既定 OFF。
+     *
+     * リズム領域が本アプリの最優先であることから当初は既定 ON にしたが、譜面の音に
+     * クリックが加算されてヘッドルームを圧迫し、歪みの一因になりうるため既定を戻した
+     * （docs/AUDIO_DEFECT_PLAN.md §3.2）。機能自体はそのままで、ON にすれば以後保持される。
+     */
     var metronomeEnabled: Boolean
         get() = prefs.getBoolean(KEY_METRONOME, DEFAULT_METRONOME)
         set(value) = prefs.edit().putBoolean(KEY_METRONOME, value).apply()
@@ -32,7 +38,7 @@ class PlaybackPreferences(context: Context) {
         const val PREFS_NAME = "playback_prefs"
         const val KEY_METRONOME = "metronome_enabled"
         const val KEY_COUNT_IN = "count_in_enabled"
-        const val DEFAULT_METRONOME = true
+        const val DEFAULT_METRONOME = false
         const val DEFAULT_COUNT_IN = false
     }
 }
