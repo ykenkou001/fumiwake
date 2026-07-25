@@ -34,11 +34,27 @@ class PlaybackPreferences(context: Context) {
         get() = prefs.getBoolean(KEY_COUNT_IN, DEFAULT_COUNT_IN)
         set(value) = prefs.edit().putBoolean(KEY_COUNT_IN, value).apply()
 
-    private companion object {
-        const val PREFS_NAME = "playback_prefs"
-        const val KEY_METRONOME = "metronome_enabled"
-        const val KEY_COUNT_IN = "count_in_enabled"
-        const val DEFAULT_METRONOME = false
-        const val DEFAULT_COUNT_IN = false
+    /**
+     * 再生カーソルの表示を遅らせる量（ミリ秒）。
+     *
+     * カーソルは実際に耳に届く音より先行する。Bluetooth では伝送遅延が上乗せされ、
+     * その量は機種・コーデックによって違うので、ユーザーが自分の環境に合わせて調整する
+     * （docs/AUDIO_DEFECT_PLAN.md §25）。既定 0 = 補正なし。
+     */
+    var cursorDelayMs: Int
+        get() = prefs.getInt(KEY_CURSOR_DELAY, DEFAULT_CURSOR_DELAY_MS)
+        set(value) = prefs.edit().putInt(KEY_CURSOR_DELAY, value.coerceIn(0, MAX_CURSOR_DELAY_MS)).apply()
+
+    companion object {
+        /** カーソル補正スライダーの上限。Bluetooth の遅延が概ね収まる範囲。 */
+        const val MAX_CURSOR_DELAY_MS = 400
+
+        private const val PREFS_NAME = "playback_prefs"
+        private const val KEY_METRONOME = "metronome_enabled"
+        private const val KEY_COUNT_IN = "count_in_enabled"
+        private const val KEY_CURSOR_DELAY = "cursor_delay_ms"
+        private const val DEFAULT_METRONOME = false
+        private const val DEFAULT_COUNT_IN = false
+        private const val DEFAULT_CURSOR_DELAY_MS = 0
     }
 }

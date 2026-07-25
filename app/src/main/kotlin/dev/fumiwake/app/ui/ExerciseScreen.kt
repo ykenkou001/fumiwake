@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.fumiwake.app.AppState
+import dev.fumiwake.app.data.PlaybackPreferences
 import dev.fumiwake.app.score.ExerciseScoreView
 import dev.fumiwake.app.score.ScoreLocator
 import dev.fumiwake.core.music.DurationTexts
@@ -93,6 +95,8 @@ fun ExerciseScreen(
     val preferences = appState.playbackPreferences
     var metronomeEnabled by remember { mutableStateOf(preferences.metronomeEnabled) }
     var countInEnabled by remember { mutableStateOf(preferences.countInEnabled) }
+    // カーソル補正も環境（イヤホンかスピーカーか）に紐づく設定なので永続化する。
+    var cursorDelayMs by remember { mutableIntStateOf(preferences.cursorDelayMs) }
     var playerState by remember(exerciseId) { mutableStateOf(PlayerState.Paused) }
     var playerStatus by remember(exerciseId) { mutableStateOf<PlayerStatus>(PlayerStatus.Loading) }
     var panelText by remember(exerciseId) { mutableStateOf(exercise.explanationJa) }
@@ -125,6 +129,7 @@ fun ExerciseScreen(
                 isLooping = isLooping,
                 metronomeEnabled = metronomeEnabled,
                 countInEnabled = countInEnabled,
+                cursorDelayMs = cursorDelayMs,
                 apiState = apiState,
                 onReady = { playerStatus = PlayerStatus.Ready },
                 onNoteTap = { note ->
@@ -239,6 +244,25 @@ fun ExerciseScreen(
                     onValueChange = { playbackSpeed = it },
                     valueRange = 0.5f..1.0f,
                 )
+
+                // 再生カーソルは実際に耳に届く音より先行する。Bluetooth では伝送遅延が
+                // 上乗せされ、その量は機種・コーデックで違うので自分の環境に合わせて
+                // 調整してもらう（docs/AUDIO_DEFECT_PLAN.md §25）。
+                Text(
+                    text = if (cursorDelayMs == 0) {
+                        "カーソル補正: なし（カーソルが音より早いときに増やす）"
+                    } else {
+                        "カーソル補正: ${cursorDelayMs}ms 遅らせる"
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Slider(
+                    value = cursorDelayMs.toFloat(),
+                    onValueChange = { cursorDelayMs = it.toInt() },
+                    onValueChangeFinished = { preferences.cursorDelayMs = cursorDelayMs },
+                    valueRange = 0f..PlaybackPreferences.MAX_CURSOR_DELAY_MS.toFloat(),
+                    steps = STEPS_25MS,
+                )
             }
 
             // 解説テキストは高さを抑え（必要ならスクロール）、余った縦幅を上の譜面
@@ -297,6 +321,12 @@ private sealed interface PlayerStatus {
 
 /** 準備完了を待つ上限。これを超えて Loading のままなら [PlayerStatus.Slow] に遷移。 */
 private const val READY_TIMEOUT_MS = 8_000L
+
+/**
+ * カーソル補正スライダーの目盛り数。0〜400ms を 25ms 刻みにする（区間 16 個 = 目盛り 15 個）。
+ * 細かすぎると合わせにくく、粗すぎると詰めきれないため。
+ */
+private const val STEPS_25MS = 15
 
 /** Fallback tap-detail text for a note with no matching [dev.fumiwake.core.exercise.FocusElement]. */
 private fun genericNoteInfo(note: Note): String {

@@ -3,6 +3,7 @@ package dev.fumiwake.app.score
 import alphaTab.AlphaTabApiBase
 import alphaTab.AlphaTabView
 import alphaTab.PlayerMode
+import alphaTab.ToNextBeatAnimatingCursorHandler
 import alphaTab.model.Beat
 import alphaTab.model.Note
 import alphaTab.synth.PlayerState
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -37,6 +39,7 @@ fun ExerciseScoreView(
     isLooping: Boolean,
     metronomeEnabled: Boolean,
     countInEnabled: Boolean,
+    cursorDelayMs: Int,
     apiState: MutableState<AlphaTabApiBase<AlphaTabView>?>,
     onReady: () -> Unit,
     onNoteTap: (Note) -> Unit,
@@ -58,6 +61,12 @@ fun ExerciseScoreView(
     // 必要がある（下記 playerReady ハンドラでのクリック設定の再適用に使う）。
     val currentMetronomeEnabled by rememberUpdatedState(metronomeEnabled)
     val currentCountInEnabled by rememberUpdatedState(countInEnabled)
+
+    // カーソルの遅延ハンドラは「差し替えず、遅延量だけ書き換える」。alphaTab は
+    // カーソルを接続するときに onAttach を呼ぶので、途中でハンドラ自体を差し替えると
+    // 新しいハンドラが初期化されないまま使われるおそれがある。
+    val cursorHandler = remember { DelayedCursorHandler(ToNextBeatAnimatingCursorHandler()) }
+    cursorHandler.delayMillis = cursorDelayMs.toLong()
 
     AndroidView(
         modifier = modifier,
@@ -96,6 +105,7 @@ fun ExerciseScoreView(
             api.updateSettings()
 
             api.masterVolume = MASTER_VOLUME
+            api.customCursorHandler = cursorHandler
 
             api.error.on { throwable -> currentOnError(throwable) }
             api.playerReady.on {
