@@ -1,5 +1,6 @@
 package dev.fumiwake.app.score
 
+import alphaTab.AlphaTabApiBase
 import alphaTab.AlphaTabView
 import alphaTab.synth.PlayerState
 
@@ -8,6 +9,29 @@ import alphaTab.synth.PlayerState
  * （「ビィィィン」）のを防ぐためのヘッドルーム。全画面共通で使う。
  */
 const val MASTER_VOLUME: Double = 0.8
+
+/**
+ * メトロノーム（クリック）の音量。譜面の音が [MASTER_VOLUME] で頭を抑えてあるため、
+ * クリックが埋もれない程度に確保する。実機で「大きすぎ／小さすぎ」が判明したときに
+ * ここだけ直せばよいように定数化している（docs/METRONOME_PLAN.md R1）。
+ */
+const val METRONOME_VOLUME: Double = 0.8
+
+/** カウントイン（再生前の予備カウント）の音量。クリックと揃える。 */
+const val COUNT_IN_VOLUME: Double = 0.8
+
+/**
+ * クリックとカウントインの ON/OFF を alphaTab へ反映する。
+ * alphaTab は音量 0.0 を「鳴らさない」として扱うので、真偽値と音量の対応は
+ * ここに一本化する（docs/METRONOME_PLAN.md §2.3）。
+ */
+fun AlphaTabApiBase<AlphaTabView>.applyClickVolumes(
+    metronomeEnabled: Boolean,
+    countInEnabled: Boolean,
+) {
+    metronomeVolume = if (metronomeEnabled) METRONOME_VOLUME else 0.0
+    countInVolume = if (countInEnabled) COUNT_IN_VOLUME else 0.0
+}
 
 /**
  * alphaTab 1.8.4 の Android 実装にある初期化競合の回避策。

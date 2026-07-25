@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 
 package dev.fumiwake.app.ui
 
@@ -7,7 +7,10 @@ import alphaTab.AlphaTabView
 import alphaTab.model.Beat
 import alphaTab.model.Note
 import alphaTab.synth.PlayerState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +22,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -83,6 +86,13 @@ fun ExerciseScreen(
 
     var playbackSpeed by remember(exerciseId) { mutableFloatStateOf(1.0f) }
     var isLooping by remember(exerciseId) { mutableStateOf(false) }
+    // テンポ・ループは譜例ごとに適切な値が違うので remember(exerciseId) でリセットするが、
+    // クリック（メトロノーム／カウントイン）は「常に鳴らしたい／常に切りたい」という
+    // 性質の設定なので、譜例切替・アプリ再起動をまたいで保持する
+    // （docs/METRONOME_PLAN.md §2.2）。
+    val preferences = appState.playbackPreferences
+    var metronomeEnabled by remember { mutableStateOf(preferences.metronomeEnabled) }
+    var countInEnabled by remember { mutableStateOf(preferences.countInEnabled) }
     var playerState by remember(exerciseId) { mutableStateOf(PlayerState.Paused) }
     var playerStatus by remember(exerciseId) { mutableStateOf<PlayerStatus>(PlayerStatus.Loading) }
     var panelText by remember(exerciseId) { mutableStateOf(exercise.explanationJa) }
@@ -113,6 +123,8 @@ fun ExerciseScreen(
                 exercise = exercise,
                 playbackSpeed = playbackSpeed,
                 isLooping = isLooping,
+                metronomeEnabled = metronomeEnabled,
+                countInEnabled = countInEnabled,
                 apiState = apiState,
                 onReady = { playerStatus = PlayerStatus.Ready },
                 onNoteTap = { note ->
@@ -175,10 +187,16 @@ fun ExerciseScreen(
                 PlayerStatus.Ready -> Unit
             }
 
-            Row(
+            // 再生オプションは 3 つとも ON/OFF の同種トグルなので FilterChip に統一し、
+            // FlowRow で 1 行（狭い端末では折り返し）に収める。Switch を縦に並べるより
+            // 縦幅を使わず、譜面（weight(1f)）の可視領域を守れる
+            // （docs/METRONOME_PLAN.md §2.5）。
+            FlowRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Button(
                     enabled = playerStatus is PlayerStatus.Ready,
@@ -186,13 +204,31 @@ fun ExerciseScreen(
                 ) {
                     Text(if (playerState == PlayerState.Playing) "停止" else "再生")
                 }
-                Text(
-                    text = "ループ",
-                    modifier = Modifier.padding(start = 16.dp, top = 12.dp),
+                // chip は Button より背が低いので、行の高さ（＝Button）に対して中央に
+                // 揃える。
+                FilterChip(
+                    selected = isLooping,
+                    onClick = { isLooping = !isLooping },
+                    label = { Text("ループ") },
+                    modifier = Modifier.align(Alignment.CenterVertically),
                 )
-                Switch(
-                    checked = isLooping,
-                    onCheckedChange = { isLooping = it },
+                FilterChip(
+                    selected = metronomeEnabled,
+                    onClick = {
+                        metronomeEnabled = !metronomeEnabled
+                        preferences.metronomeEnabled = metronomeEnabled
+                    },
+                    label = { Text("メトロノーム") },
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                )
+                FilterChip(
+                    selected = countInEnabled,
+                    onClick = {
+                        countInEnabled = !countInEnabled
+                        preferences.countInEnabled = countInEnabled
+                    },
+                    label = { Text("カウントイン") },
+                    modifier = Modifier.align(Alignment.CenterVertically),
                 )
             }
 
