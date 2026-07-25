@@ -15,20 +15,26 @@ import alphaTab.synth.PlayerState
 const val MASTER_VOLUME: Double = 0.8
 
 /**
- * alphaTab の内部オーディオバッファ長。
+ * alphaTab の内部オーディオバッファ長。**音の途切れと再生カーソルのズレのトレードオフ点**
+ * を決める値で、実機フィードバックで調整する（docs/AUDIO_DEFECT_PLAN.md §20）。
  *
  * alphaTab 1.8.4 は `AudioTrack` を **4096 バイト固定**（ステレオ float で 512 フレーム
  * ＝ 44.1kHz で約 11.6ms）で生成し、`AudioTrack.getMinBufferSize()` を参照しない。
  * 内蔵スピーカーは低遅延経路なので成立するが、Bluetooth は符号化・パケット化のため
- * 桁違いに大きなバッファを要するので枯渇し、周期的なうねり（ビブラート状の音）になる
- * （docs/AUDIO_DEFECT_PLAN.md §16）。
+ * 桁違いに大きなバッファを要するので枯渇し、周期的なうねりになる（同 §16）。
+ * この 4096 はライブラリ内の固定値で外から変えられず、本設定が効くのは内部の
+ * CircularSampleBuffer だけ。
  *
- * この 4096 はライブラリ内の固定値で外から変えられない。本設定が効くのは内部の
- * CircularSampleBuffer だけだが、Bluetooth ではコーデック処理に CPU を奪われて合成が
- * 遅れることも枯渇の一因になるため、既定 500ms より厚くして余裕を持たせる。
- * 大きくするほど停止・シーク時に音が残るので 1000ms に留める。
+ * 実機での確認結果:
+ *  - 150ms: アンダーランから復帰せず無音・カーソル凍結（過去の回帰）
+ *  - 500ms（alphaTab 既定）: Bluetooth でうねる
+ *  - 1000ms: Bluetooth のうねりはほぼ解消するが、カーソルが音よりかなり先行する
+ *  - **700ms（現在）**: 上記の中間を狙う
+ *
+ * 内部バッファは 4096 サンプル単位に量子化される（`bufferTime * 44100 / 1000 / 4096` の
+ * 整数部がブロック数）ため、1000ms→10 ブロック、700ms→7 ブロックとなり約 3 割短くなる。
  */
-const val AUDIO_BUFFER_MS: Double = 1000.0
+const val AUDIO_BUFFER_MS: Double = 700.0
 
 /**
  * メトロノーム（クリック）の音量。譜面の音が [MASTER_VOLUME] で頭を抑えてあるため、
