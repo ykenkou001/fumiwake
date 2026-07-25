@@ -64,7 +64,14 @@ DESIGN.md の MVP 定義をそのまま採用する：
   → 「音名・音価・フレット位置」表示に必要な情報は全て取得可能。
   音名文字列は直接持たないため **MIDI 値→音名変換は `:core` のユーティリティで実装**（§4）
 - 検証済み alphaTex 基本構文: 音符 `fret.string.duration`、休符 `r.duration`、
-  付点 `{d}`、タイ `-.duration`、拍子 `\ts 4 4`、小節線 `|`
+  付点 `{d}`、**タイ `-.string[.duration]`**、拍子 `\ts 4 4`、小節線 `|`
+  - ⚠️ **タイは音価ではなく「弦」を書く**（フレット位置に `-` を書く記法）。
+    当初ここに「タイ `-.duration`」と誤記しており、その誤りが譜例に伝播して
+    「楽譜に無い音が鳴り続ける」不具合を生んだ。`-.2` は「2分音符のタイ」ではなく
+    「2 弦へのタイ」と解釈され、直前の音が別の弦ならタイの相手がいないため
+    その弦の音が新規に発音される。詳細は `docs/AUDIO_DEFECT_PLAN.md`
+  - この種の誤りは**パースが通ってしまう**ため texcheck の構文検証では捕まらない。
+    生成 MIDI を検証する仕組み（§6.5）で担保する
 - 注意: alphaTex の弦番号と `Note.string` の値は同一とは限らない（実測: `3.3.4` →
   `Note.string == 4`）。対応付けは ScoreLocator（§5）に閉じ込め、ユニットテストで固定する
 
@@ -351,7 +358,7 @@ M2a で alphaTab の描画・再生が Android 上で成立することを確認
 - 最終セルフレビュー（正しさ・境界・命名・冗長性）
 - **DoD**: 両ジョブグリーン、APK artifact 取得可能、README に §7 の確認手順を記載
 
-### §6.5 alphaTex 検証ツール `tools/texcheck`
+### §6.5 alphaTex 検証ツール `tools/texcheck`（構文＋意味）
 
 AAR（Maven Central から curl 可能）の classes.jar + kotlin-stdlib +
 kotlinx-coroutines-core-jvm で `AlphaTexImporter.initFromString → readScore` を実行する
@@ -359,6 +366,17 @@ kotlinx-coroutines-core-jvm で `AlphaTexImporter.initFromString → readScore` 
 フィールドを全件パースし、診断（行・列付き）を表示、エラーがあれば非 0 終了。
 依存 jar は初回に `tools/texcheck/lib/` へダウンロードしてキャッシュ（.gitignore 対象）。
 動作原理はこの環境で実証済み。M0 の一部として作成する（M1.5 が使うため）。
+
+**構文検証だけでは不十分**だったため（`-.2` は「2 弦へのタイ」として文法的に妥当で、
+パースを通過しつつ楽譜に無い音を鳴らしていた）、`MidiFileGenerator` で実際に生成される
+MIDI を検証する項目を追加している：
+
+1. **音の重なりが無いこと** — 全譜例は単旋律なので、同時に 2 音鳴れば異常
+2. **タイに相手がいること** — `-.<弦>` は直前の音と同じ弦を指していなければならない
+3. **各小節の長さが拍子と一致すること** — 拍数の数え間違いの自動検出
+
+同じ検証は `:app` の `ExerciseMidiSemanticsTest` にも実装してあり、そちらが CI の門番
+（`tools/texcheck` はローカルの高速ループ）。経緯は `docs/AUDIO_DEFECT_PLAN.md`。
 
 ## 7. ユーザー実機確認への引き渡し
 

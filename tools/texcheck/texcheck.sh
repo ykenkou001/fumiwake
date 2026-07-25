@@ -68,4 +68,4 @@ if [ "${#files[@]}" -eq 0 ]; then
     exit 0
 fi
 
-java -classpath "$LIB_DIR:$CLASSPATH" TexCheck "${files[@]}"
+java -Dfile.encoding=UTF-8 -classpath "$LIB_DIR:$CLASSPATH" TexCheck "${files[@]}"
