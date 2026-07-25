@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import dev.fumiwake.app.score.AUDIO_BUFFER_MS
 import dev.fumiwake.app.score.MASTER_VOLUME
 import dev.fumiwake.app.score.renderWhenSized
 import dev.fumiwake.core.music.NoteNames
@@ -78,8 +79,8 @@ class SpikeActivity : ComponentActivity() {
         settings.player.playerMode = PlayerMode.EnabledSynthesizer
         settings.player.enableCursor = true
         settings.player.enableUserInteraction = true
-        // bufferTimeInMilliseconds は alphaTab 既定（500ms）のまま。詰めすぎると
-        // アンダーランで音・カーソルが止まる。エクササイズ画面と同じ方針。
+        // Bluetooth 出力時のうねり対策で既定より厚くする。エクササイズ画面と同じ方針。
+        settings.player.bufferTimeInMilliseconds = AUDIO_BUFFER_MS
         alphaTabView.settings = settings
         alphaTabView.api.updateSettings()
 
