@@ -37,6 +37,7 @@ fun ExerciseScoreView(
     isLooping: Boolean,
     metronomeEnabled: Boolean,
     countInEnabled: Boolean,
+    audioBufferMs: Int,
     apiState: MutableState<AlphaTabApiBase<AlphaTabView>?>,
     onReady: () -> Unit,
     onNoteTap: (Note) -> Unit,
@@ -86,10 +87,11 @@ fun ExerciseScoreView(
             settings.player.playerMode = PlayerMode.EnabledSynthesizer
             settings.player.enableCursor = true
             settings.player.enableUserInteraction = true
-            // Bluetooth 出力時のうねり対策で既定 500ms より厚くする。かつて 150ms まで
-            // 詰めた際はアンダーランから復帰せず無音・カーソル凍結を招いており、この
-            // 音声経路はもともと余裕が無い。詳細は AUDIO_BUFFER_MS のコメント参照。
-            settings.player.bufferTimeInMilliseconds = AUDIO_BUFFER_MS
+            // 音の途切れと再生カーソルのズレのトレードオフ点。適切な値は出力先や機種で
+            // 変わるためユーザーが画面から調整する（AUDIO_BUFFER_MS のコメント参照）。
+            // バッファはプレイヤー生成時にしか効かないので、呼び出し側は値が変わったら
+            // この AndroidView ごと作り直す（key で囲っている）。
+            settings.player.bufferTimeInMilliseconds = audioBufferMs.toDouble()
             view.settings = settings
 
             val api = view.api

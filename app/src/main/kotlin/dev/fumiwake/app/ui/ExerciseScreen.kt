@@ -34,7 +34,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.fumiwake.app.AppState
+import dev.fumiwake.app.data.PlaybackPreferences
 import dev.fumiwake.app.score.ExerciseScoreView
 import dev.fumiwake.app.score.ScoreLocator
 import dev.fumiwake.core.music.DurationTexts
@@ -93,6 +96,12 @@ fun ExerciseScreen(
     val preferences = appState.playbackPreferences
     var metronomeEnabled by remember { mutableStateOf(preferences.metronomeEnabled) }
     var countInEnabled by remember { mutableStateOf(preferences.countInEnabled) }
+    // オーディオバッファも環境（スピーカーか Bluetooth か）に紐づく設定なので永続化する。
+    // スライダー操作中は sliderBufferMs だけが動き、指を離した時点で appliedBufferMs に
+    // 反映する。バッファはプレイヤー生成時にしか効かず、変更するとビューの作り直しに
+    // なるため、ドラッグ中に追従させると再生成が連続してしまう。
+    var sliderBufferMs by remember { mutableIntStateOf(preferences.audioBufferMs) }
+    var appliedBufferMs by remember { mutableIntStateOf(preferences.audioBufferMs) }
     var playerState by remember(exerciseId) { mutableStateOf(PlayerState.Paused) }
     var playerStatus by remember(exerciseId) { mutableStateOf<PlayerStatus>(PlayerStatus.Loading) }
     var panelText by remember(exerciseId) { mutableStateOf(exercise.explanationJa) }
@@ -119,12 +128,16 @@ fun ExerciseScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+            // バッファ長はプレイヤー生成時にしか効かないため、値が変わったら
+            // key() でこのサブツリーごと作り直して新しい設定でプレイヤーを開かせる。
+            key(appliedBufferMs) {
             ExerciseScoreView(
                 exercise = exercise,
                 playbackSpeed = playbackSpeed,
                 isLooping = isLooping,
                 metronomeEnabled = metronomeEnabled,
                 countInEnabled = countInEnabled,
+                audioBufferMs = appliedBufferMs,
                 apiState = apiState,
                 onReady = { playerStatus = PlayerStatus.Ready },
                 onNoteTap = { note ->
@@ -149,6 +162,7 @@ fun ExerciseScreen(
                     .weight(1f)
                     .fillMaxWidth(),
             )
+            }
 
             // 音源準備の進行・失敗を再生ボタンの直上に見せる（無言失敗の可視化）。
             when (val status = playerStatus) {
@@ -239,6 +253,26 @@ fun ExerciseScreen(
                     onValueChange = { playbackSpeed = it },
                     valueRange = 0.5f..1.0f,
                 )
+
+                // 音の途切れと再生カーソルのズレはトレードオフで、最適点は出力先
+                // （スピーカー／Bluetooth）や機種によって違う。こちらで決め打ちできない
+                // ため、再生しながら合わせてもらう（docs/AUDIO_DEFECT_PLAN.md §29）。
+                Text(
+                    text = "音の遅延: ${sliderBufferMs}ms" +
+                        "（小さい=カーソルが合う / 大きい=音が途切れにくい）",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Slider(
+                    value = sliderBufferMs.toFloat(),
+                    onValueChange = { sliderBufferMs = it.toInt() },
+                    onValueChangeFinished = {
+                        preferences.audioBufferMs = sliderBufferMs
+                        appliedBufferMs = sliderBufferMs
+                    },
+                    valueRange = PlaybackPreferences.MIN_AUDIO_BUFFER_MS.toFloat()..
+                        PlaybackPreferences.MAX_AUDIO_BUFFER_MS.toFloat(),
+                    steps = BUFFER_SLIDER_STEPS,
+                )
             }
 
             // 解説テキストは高さを抑え（必要ならスクロール）、余った縦幅を上の譜面
@@ -297,6 +331,13 @@ private sealed interface PlayerStatus {
 
 /** 準備完了を待つ上限。これを超えて Loading のままなら [PlayerStatus.Slow] に遷移。 */
 private const val READY_TIMEOUT_MS = 8_000L
+
+/**
+ * 音の遅延スライダーの目盛り数。300〜1500ms を 100ms 刻みにする（区間 12 個 = 目盛り 11 個）。
+ * alphaTab の内部バッファは 4096 サンプル（約 46ms）単位に量子化されるため、
+ * これより細かくしても実際には効かない。
+ */
+private const val BUFFER_SLIDER_STEPS = 11
 
 /** Fallback tap-detail text for a note with no matching [dev.fumiwake.core.exercise.FocusElement]. */
 private fun genericNoteInfo(note: Note): String {
