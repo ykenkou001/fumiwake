@@ -86,17 +86,15 @@ fun ExerciseScoreView(
             settings.player.playerMode = PlayerMode.EnabledSynthesizer
             settings.player.enableCursor = true
             settings.player.enableUserInteraction = true
-            // bufferTimeInMilliseconds は alphaTab 既定（500ms）のまま使う。150ms まで
-            // 詰めるとバッファ不足でオーディオ出力がアンダーランして復帰せず、音が止まり、
-            // 実再生サンプル数で駆動される再生カーソルも途中で凍結する回帰が起きたため。
+            // Bluetooth 出力時のうねり対策で既定 500ms より厚くする。かつて 150ms まで
+            // 詰めた際はアンダーランから復帰せず無音・カーソル凍結を招いており、この
+            // 音声経路はもともと余裕が無い。詳細は AUDIO_BUFFER_MS のコメント参照。
+            settings.player.bufferTimeInMilliseconds = AUDIO_BUFFER_MS
             view.settings = settings
 
             val api = view.api
             api.updateSettings()
 
-            // 一部エクササイズ（全音符・タイなど長い音が多い譜例）で、サステイン音が
-            // マスター音量 1.0 だとクリップして「ビィィィン」という歪みになる。
-            // ヘッドルームを確保してクリップを防ぐ。
             api.masterVolume = MASTER_VOLUME
 
             api.error.on { throwable -> currentOnError(throwable) }
