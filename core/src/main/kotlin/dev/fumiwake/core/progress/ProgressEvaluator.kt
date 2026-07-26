@@ -13,8 +13,20 @@ class ProgressEvaluator(
     private val store: ProgressStore,
 ) {
 
+    /**
+     * What counts as learned for every decision this class makes: what the user actually
+     * completed, plus the concepts the taxonomy assumes known (DESIGN.md §2.3).
+     *
+     * Both call sites below must use this, not [ProgressStore.learnedConcepts] directly.
+     * Feeding it only to the "is this concept itself learned?" check leaves the
+     * *dependency satisfaction* check unaware of assumed-known concepts, which is the
+     * half-fix that shows `pitch.staff-names` as known while everything depending on it
+     * stays locked.
+     */
+    private fun effectiveLearned(): Set<String> = store.learnedConcepts() + graph.assumedKnownIds
+
     fun statusOf(conceptId: String): ConceptStatus {
-        val learned = store.learnedConcepts()
+        val learned = effectiveLearned()
         if (conceptId in learned) return ConceptStatus.LEARNED
         val concept = graph.get(conceptId) ?: return ConceptStatus.LOCKED
         return if (learned.containsAll(concept.dependsOn)) ConceptStatus.AVAILABLE else ConceptStatus.LOCKED

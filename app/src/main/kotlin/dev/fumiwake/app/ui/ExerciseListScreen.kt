@@ -55,6 +55,21 @@ fun ExerciseListScreen(
                     )
                 }
             }
+            if (exercises.isEmpty()) {
+                item(key = "empty") {
+                    // 現状これに当たるのは assumedKnown の概念だけ（DESIGN.md §2.3）。
+                    // 空リストのまま何も出さないと「読み込みに失敗した」ように見える。
+                    Text(
+                        text = if (concept?.assumedKnown == true) {
+                            "この概念は既習として扱っています。エクササイズはありません。"
+                        } else {
+                            "この概念のエクササイズはまだありません。"
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
+            }
             items(exercises, key = { it.exerciseId }) { exercise ->
                 Card(
                     onClick = { onExerciseClick(exercise.exerciseId) },

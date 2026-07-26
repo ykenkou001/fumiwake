@@ -120,7 +120,7 @@ private fun ConceptCard(
             .padding(horizontal = 16.dp, vertical = 4.dp),
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text("${statusBadge(status)} ${concept.nameJa}")
+            Text("${badgeFor(concept, status)} ${concept.nameJa}")
             if (concept.dependsOn.isNotEmpty()) {
                 val depNames = concept.dependsOn.joinToString("、") { graph.get(it)?.nameJa ?: it }
                 Text(
@@ -131,6 +131,14 @@ private fun ConceptCard(
         }
     }
 }
+
+/**
+ * An assumed-known concept (DESIGN.md §2.3) evaluates to LEARNED, but the user did not
+ * learn it here — the app merely assumes it. Showing the same ✓ as a concept they worked
+ * through would misreport their own progress back to them, so it gets its own badge.
+ */
+private fun badgeFor(concept: Concept, status: ConceptStatus): String =
+    if (concept.assumedKnown) "既習" else statusBadge(status)
 
 private fun statusBadge(status: ConceptStatus): String = when (status) {
     ConceptStatus.LOCKED -> "🔒"
