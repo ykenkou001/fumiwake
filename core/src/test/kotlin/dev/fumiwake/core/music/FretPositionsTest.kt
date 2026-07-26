@@ -58,6 +58,35 @@ class FretPositionsTest {
     }
 
     @Test
+    fun `otherPositionsOf excludes the position itself`() {
+        // 5弦開放の A2 は 6弦5フレットにもある。返るのは「他の場所」だけ。
+        assertEquals(
+            listOf(FretPosition(6, 5)),
+            FretPositions.otherPositionsOf(FretPosition(5, 0), minFret = 0, maxFret = 12),
+        )
+    }
+
+    @Test
+    fun `otherPositionsOf respects the exercise's declared fret range`() {
+        // ローポジションの譜例（0..3）で、ネックの上の方の運指まで提示してはいけない。
+        assertEquals(
+            emptyList(),
+            FretPositions.otherPositionsOf(FretPosition(5, 0), minFret = 0, maxFret = 3),
+        )
+        assertEquals(
+            listOf(FretPosition(6, 5)),
+            FretPositions.otherPositionsOf(FretPosition(5, 0), minFret = 0, maxFret = 5),
+        )
+    }
+
+    @Test
+    fun `otherPositionsOf finds every alternative when the range is wide`() {
+        // E4 (64) は 1弦開放 / 2弦5 / 3弦9 / 4弦14 ... 12フレットまでなら3箇所。
+        val others = FretPositions.otherPositionsOf(FretPosition(1, 0), minFret = 0, maxFret = 12)
+        assertEquals(listOf(FretPosition(3, 9), FretPosition(2, 5)), others)
+    }
+
+    @Test
     fun `an out-of-range string is rejected rather than silently wrapping`() {
         assertFailsWith<IllegalArgumentException> { FretPositions.midiOf(string = 7, fret = 0) }
         assertFailsWith<IllegalArgumentException> { FretPositions.midiOf(string = 0, fret = 0) }

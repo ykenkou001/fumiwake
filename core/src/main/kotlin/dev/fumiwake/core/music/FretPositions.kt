@@ -41,4 +41,26 @@ object FretPositions {
             if (fret in 0..maxFret) FretPosition(string, fret) else null
         }
     }
+
+    /**
+     * The *other* places the pitch at [position] can be played, restricted to
+     * [minFret]..[maxFret].
+     *
+     * This is what the fretboard diagram shows in a lighter shade, and what Phase 2-B
+     * will accept as equally-correct answers to "where is this note?". Bounding it by the
+     * exercise's own declared fret range matters: without the bound, an exercise about
+     * the first three frets would offer positions halfway up the neck that it never
+     * intended to teach.
+     */
+    fun otherPositionsOf(
+        position: FretPosition,
+        minFret: Int,
+        maxFret: Int,
+        tuning: Tuning = Tuning.STANDARD,
+    ): List<FretPosition> {
+        require(minFret in 0..maxFret) { "invalid fret range $minFret..$maxFret" }
+        val midi = midiOf(position.string, position.fret, tuning)
+        return positionsOf(midi, maxFret, tuning)
+            .filter { it != position && it.fret >= minFret }
+    }
 }

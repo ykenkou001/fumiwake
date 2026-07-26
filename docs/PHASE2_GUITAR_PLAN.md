@@ -367,23 +367,25 @@ Kotlin コンパイラを直接叩く `tools/ktcheck/ktcheck.sh` を用意した
 
 ### 6.1 一覧
 
+実装済み。`fretRange` は実際に書いた内容に合わせて確定した値。
+
 | exerciseId | 概念 | 主題 | fretRange | difficulty |
 | --- | --- | --- | --- | --- |
-| pitch.ledger-lines.001 | ledger-lines | 五線の上に出る音（加線 1〜2 本） | 0–5 | 2 |
-| pitch.ledger-lines.002 | ledger-lines | 五線の下に出る音（低音弦側） | 0–5 | 2 |
+| pitch.ledger-lines.001 | ledger-lines | 五線の上に出る音（1 弦を上がって加線が増える） | 0–8 | 2 |
+| pitch.ledger-lines.002 | ledger-lines | 五線の下に出る音（低音弦側） | 0–3 | 2 |
 | pitch.accidentals.001 | accidentals | ♯ = 1 フレット上、♮ で戻る | 0–4 | 2 |
 | pitch.accidentals.002 | accidentals | ♭ = 1 フレット下。♯ との異名同音 | 0–4 | 3 |
-| pitch.octaves.001 | octaves | 同じ音名・違うオクターブ（ド・ド） | 0–5 | 2 |
-| pitch.octaves.002 | octaves | オクターブ違いを五線上で読み分ける | 0–8 | 3 |
+| pitch.octaves.001 | octaves | 同じ音名・違うオクターブ（3 組） | 0–3 | 2 |
+| pitch.octaves.002 | octaves | 3 オクターブの「ミ」を加線の数で読み分ける | 0–2 | 3 |
 | guitar.open-strings.001 | open-strings | 6 本の開放弦と五線の対応 | 0–0 | 1 |
-| guitar.open-strings.002 | open-strings | 開放弦だけで音階を上下する | 0–0 | 1 |
-| guitar.low-position.001 | low-position | 5・6 弦のローポジション（0〜3 フレット） | 0–3 | 2 |
+| guitar.open-strings.002 | open-strings | 開放弦だけで上って下りる（3→2 弦だけ幅が狭い） | 0–0 | 1 |
+| guitar.low-position.001 | low-position | 5・6 弦のローポジション | 0–3 | 2 |
 | guitar.low-position.002 | low-position | 1〜3 弦のローポジション | 0–3 | 2 |
-| guitar.low-position.003 | low-position | 6 弦全部を使ったローポジション音階（Cメジャー） | 0–4 | 3 |
-| guitar.multi-positions.001 | multi-positions | 同じ音を 2 つの弦で（開放 vs 5 フレット） | 0–5 | 3 |
-| guitar.multi-positions.002 | multi-positions | 同じフレーズを別ポジションで弾く | 0–12 | 4 |
-| guitar.tab-mapping.001 | tab-mapping | 五線と TAB を併記して対応を見る | 0–4 | 2 |
-| guitar.tab-mapping.002 | tab-mapping | TAB の数字が「弦上のフレット」であることの確認 | 0–7 | 3 |
+| guitar.low-position.003 | low-position | 6 弦を通してローポジションで上がる（Cメジャー） | 0–3 | 3 |
+| guitar.multi-positions.001 | multi-positions | 同じ音を開放弦と 1 本下の弦の 5 フレットで | 0–5 | 3 |
+| guitar.multi-positions.002 | multi-positions | 同じフレーズをローポジションと 7〜10 フレットで | 0–10 | 4 |
+| guitar.tab-mapping.001 | tab-mapping | 五線と TAB を見比べる（線 = 弦、数字 = フレット） | 0–3 | 2 |
+| guitar.tab-mapping.002 | tab-mapping | 同じ数字でも弦が違えば別の音 | 0–7 | 3 |
 
 **prerequisites**（タクソノミーの推移的依存の部分集合であること）：
 
@@ -491,9 +493,14 @@ fun FretboardView(
 3. `./gradlew :app:testDebugUnitTest` — 構文 / MIDI 意味 / **記譜↔運指**（新規）
 4. push → CI グリーン確認
 5. 実機確認（Android SDK はこの開発環境に無いため、ここだけは手元では閉じない）:
-   - guitar 概念が 🔒 でなくなっていること
+   - guitar / pitch 概念が 🔒 でなくなり、`pitch.staff-names` が「既習」と出ること
    - 音符タップで指板図の正しい位置が光ること
-   - `multi-positions` で代替位置が薄く出ること
+   - `multi-positions` で代替位置が白抜きの丸で出ること
+   - rhythm の譜例では指板図が**出ない**こと（`fretRange` を持たないため）
+   - 開放弦のみの譜例（`fretRange` 0–0）で指板図が潰れないこと
+   - `accidentals` の譜例で ♯/♭ が意図どおりの向きで描かれること
+     （alphaTab の異名同音の綴り選択はこちらで指定していない。MIDI 上は正しいので
+     検証は通るが、見た目が ♭ 側に倒れる可能性がある。倒れていたら `\ks` で調整する）
 
 ## 9. コミット粒度
 
