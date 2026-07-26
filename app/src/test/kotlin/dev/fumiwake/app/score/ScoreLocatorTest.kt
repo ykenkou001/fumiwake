@@ -108,6 +108,35 @@ class ScoreLocatorTest {
         assertNull(ScoreLocator.findFocus(exercise, note1))
     }
 
+    @Test
+    fun `fingeringOf flips alphaTab's string numbering back to the guitarist's`() {
+        // フィクスチャの `3.3.4` は alphaTex で「3弦3フレット」。alphaTab のモデル上は
+        // string=4（1 = 最低音弦）で入ってくる。ここで反転しないと、指板図も正誤判定も
+        // 弦が入れ替わったまま動く。
+        val score = buildScore()
+        val note = score.tracks.get(0).staves.get(0).bars.get(0).voices.get(0).beats.get(0).notes.get(0)
+
+        val fingering = ScoreLocator.fingeringOf(note)
+
+        assertEquals(3, fingering.string)
+        assertEquals(3, fingering.fret)
+        // 3弦3フレットの実音は A#3 (58)。alphaTab の realValue と一致するはず。
+        assertEquals(58, note.realValue.toInt())
+    }
+
+    @Test
+    fun `fingeringOf reads the fret from a different string too`() {
+        // 2小節目の `3.4.2` = 4弦3フレット（実音 F3 = 53）。
+        val score = buildScore()
+        val note = score.tracks.get(0).staves.get(0).bars.get(1).voices.get(0).beats.get(0).notes.get(0)
+
+        val fingering = ScoreLocator.fingeringOf(note)
+
+        assertEquals(4, fingering.string)
+        assertEquals(3, fingering.fret)
+        assertEquals(53, note.realValue.toInt())
+    }
+
     private fun exerciseWithFocus(vararg focusElements: FocusElement) = Exercise(
         exerciseId = "rhythm.beat.999",
         conceptId = "rhythm.beat",

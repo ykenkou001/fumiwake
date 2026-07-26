@@ -352,6 +352,17 @@ alphaTab の番号を一切見ない。弦数はハードコードせず、そ�
 二重実装になるが、手元で落ちないものを CI で初めて発見する運用は
 コンテンツ 15 譜例に対して回転が悪すぎる。
 
+### 5.5 `tools/ktcheck` — `:app` の型チェック手段
+
+同じ制約の別の面として、**`:app` の Kotlin コードは手元でコンパイルすら
+できない**。テストコードの型の誤りを CI の往復で潰すのは遅すぎるため、
+Kotlin コンパイラを直接叩く `tools/ktcheck/ktcheck.sh` を用意した。
+
+- 対象は **Android / Compose API に触れないソース**のみ（`android.jar` が無い）。
+  `app/.../score/` 配下とテストはこれで通せる。UI コードは CI 頼み
+- `-opt-in=kotlin.contracts.ExperimentalContracts` を渡す点が要（alphaTab の
+  公開 API がこの注釈を持つため、無いと全参照が opt-in エラーになる）
+
 ## 6. コンテンツ — 15 譜例
 
 ### 6.1 一覧
