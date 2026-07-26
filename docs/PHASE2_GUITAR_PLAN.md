@@ -1,4 +1,4 @@
-# Phase 2-A: ギター読解の核 実装計画 rev.1
+# Phase 2-A: ギター読解の核 実装計画 rev.2（実施済み）
 
 > DESIGN.md rev.2 §6 Phase 2 の前半。**guitar ドメインを「実際に到達できて、
 > 実際に読める」状態にする**ことがゴール。
@@ -6,19 +6,23 @@
 > Phase 2 の後半（読解確認モード §4.4 / レイヤー再生 §4.3）は
 > `docs/PHASE2_CHECK_PLAN.md` に分ける。指板図が本計画で出来ていることが
 > 後半の前提になるため、本計画が先。
+>
+> **rev.2 = 実施後の記録**。着手前のスパイク（§5）で前提が 2 つ崩れたため、
+> その結果と対応を本文に反映してある。DoD 5 項目はすべて達成し、CI は
+> `core-test` / `android-build` とも green。残るのは実機確認（§8-5）のみ。
 
-## 0. ゴール（Definition of Done）
+## 0. ゴール（Definition of Done）— 5/5 達成
 
-1. **guitar ドメインが LOCKED から解ける** — `pitch.staff-names` の詰み
+1. ✅ **guitar ドメインが LOCKED から解ける** — `pitch.staff-names` の詰み
    （DESIGN.md §2.3）を `assumedKnown` で解消し、概念マップ上で guitar の
    概念が AVAILABLE になる
-2. **記譜↔運指の検証層が動いている**（DESIGN.md §3.4 の第三層）。
+2. ✅ **主張↔実音の検証層が動いている**（DESIGN.md §3.4 の第三層）。
    guitar / pitch ドメインのコンテンツは、意図した音と実際に鳴る音の
    一致が CI で機械検証される
-3. **guitar 4 概念 + pitch 3 概念にエクササイズが存在する**（計 15 譜例。
+3. ✅ **guitar 4 概念 + pitch 3 概念にエクササイズが存在する**（計 15 譜例。
    既存 22 → 37）
-4. **指板図が表示される** — 音符をタップすると、その音が指板のどこかが見える
-5. 既存の検証がすべてグリーン（`:core:test` / `ExerciseTexParseTest` /
+4. ✅ **指板図が表示される** — 音符をタップすると、その音が指板のどこかが見える
+5. ✅ 既存の検証がすべてグリーン（`:core:test` / `ExerciseTexParseTest` /
    `ExerciseMidiSemanticsTest`）
 
 **スコープ外**（意図的に外す）：
@@ -133,7 +137,7 @@ guitar.open-strings はエクササイズを持つが、依存する pitch.staff
 エクササイズ 0 件かつ assumedKnown=false のため永久に LEARNED にならない
 ```
 
-## 3. 前提条件 B — 記譜↔運指の検証層（DESIGN.md §3.4 第三層）
+## 3. 前提条件 B — 主張↔実音の検証層（DESIGN.md §3.4 第三層）
 
 ### 3.1 何を検証すべきかの再定義
 
@@ -191,8 +195,9 @@ data class FretRange(val min: Int, val max: Int)
 - **導出する案** → 検証も表示も 1 つのロジックから出る。採用
 
 副次効果として、`fretRange` が「どの範囲を代替ポジションとみなすか」の
-境界を与える。`multi-positions` の譜例は `fretRange: {min: 0, max: 12}` と
-書くことで、指板図が 12 フレットまで描き、列挙もそこで打ち切られる。
+境界を与える。`multi-positions.002` は `fretRange: {min: 0, max: 10}` と
+書いてあり、指板図はそこまでを描き、代替ポジションの列挙もそこで打ち切られる。
+絞らないと、ローポジションの譜例にネックの上の方の運指が並んでしまう。
 
 この決定は Phase 2-B にも効く。§4.4 の確認モードが「この音はどのフレット？」の
 **正解判定**をするとき、代替ポジションも正解として受け入れる必要がある。

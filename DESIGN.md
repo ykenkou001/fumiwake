@@ -13,25 +13,30 @@
 
 ## 0. 現在地（rev.2 時点）
 
-Phase 0（技術スパイク）と Phase 1（Bundled MVP）は達成済み。
-**アプリとして動作し、実機に配布されている**。
+Phase 0（技術スパイク）・Phase 1（Bundled MVP）・Phase 2 前半（ギター読解の核）は
+達成済み。**アプリとして動作し、実機に配布されている**。
 
 | 領域 | 状態 |
 | --- | --- |
-| rhythm ドメイン 9 概念 × 全 22 譜例 | ✅ 完成（DAG が最後までつながる） |
-| pitch / guitar / structure / harmony | ⛔ タクソノミーのみ。エクササイズ 0 件 |
+| rhythm ドメイン 9 概念 × 22 譜例 | ✅ 完成（DAG が最後までつながる） |
+| guitar ドメイン 4 概念 × 9 譜例 | ✅ 完成（`docs/PHASE2_GUITAR_PLAN.md`） |
+| pitch ドメイン 3 概念 × 6 譜例 | ✅ guitar が要求する範囲は完成（key-signatures は後段） |
+| structure / harmony | ⛔ タクソノミーのみ。エクササイズ 0 件 |
 | 譜面表示（五線 + TAB）・タップ解説・単音再生 | ✅ |
+| 指板可視化（代替ポジション表示を含む） | ✅ |
 | 再生・テンポ 50–100%・小節ループ・メトロノーム・カウントイン | ✅ |
-| 進捗保存（SQLite）・概念の習得判定 | ✅ |
-| レイヤー再生（リズムのみ／クリックのみ） | ⛔ §4 の設計に記載があるが未実装 |
-| 指板可視化 | ⛔ 未実装 |
+| 進捗保存（SQLite）・概念の習得判定・既習概念 | ✅ |
+| コンテンツ検証（構文 / MIDI 意味 / 主張↔実音 / スキーマ） | ✅ 四層とも稼働（§3.4） |
+| レイヤー再生（リズムのみ／クリックのみ） | ⛔ §4.3 の設計に記載があるが未実装 |
 | 読解確認（答え合わせ型の能動リコール） | ⛔ rev.2 で設計確定。未実装（§1.3 / §4.4） |
+| 定着の仕組み（間隔反復） | ⛔ 設計のみ確定。実装は Phase 4（§6） |
 | 曲の持ち込み（MusicXML / Guitar Pro） | ⛔ 未着手。技術検証も未実施 |
 | 音の安定性 | ⚠️ ゴースト音は解決。遅延／うねりはユーザー設定で吸収中（§5.2） |
 
-**率直な評価**: 「リズム読解の専用ドリル」としては完成しているが、
-*アコースティックギター奏者のための*という看板の核心（音符→フレット変換）は
-まだ空である。次段階の主題はここを埋めることに置く。
+**率直な評価**: *アコースティックギター奏者のための*という看板の核心
+（音符→フレット変換）が埋まり、読解のうち「見る」と「聴く」は 37 譜例に対して
+一通り揃った。残る欠けは「確かめる」— 読めたつもりのまま進めてしまう問題は
+未解決のままである（§1.3）。次段階の主題はここに置く。
 
 ## 1. One-line Definition
 
@@ -119,22 +124,22 @@ Concepts form a **DAG (dependency graph)**, not a linear sequence.
 
 #### Domain: pitch
 
-| concept_id           | name（日本語）       | depends_on           | 状態 |
+| concept_id           | name（日本語）       | depends_on           | 譜例 |
 | -------------------- | -------------------- | -------------------- | ---- |
 | pitch.staff-names    | 五線上の音名         | —                    | **既習扱い**（§2.3） |
-| pitch.ledger-lines   | 加線                 | pitch.staff-names    | 次段階で着手 |
-| pitch.accidentals    | ♯♭♮（臨時記号）      | pitch.staff-names    | 次段階で着手（推奨） |
+| pitch.ledger-lines   | 加線                 | pitch.staff-names    | 2 |
+| pitch.accidentals    | ♯♭♮（臨時記号）      | pitch.staff-names    | 2 |
 | pitch.key-signatures | 調号                 | pitch.accidentals    | 後段 |
-| pitch.octaves        | オクターブの読み分け | pitch.ledger-lines   | 次段階で着手 |
+| pitch.octaves        | オクターブの読み分け | pitch.ledger-lines   | 2 |
 
-#### Domain: guitar（このアプリ固有の価値 — 次段階の主題）
+#### Domain: guitar（このアプリ固有の価値）
 
-| concept_id             | name（日本語）                | depends_on                            |
-| ---------------------- | ----------------------------- | ------------------------------------- |
-| guitar.open-strings    | 開放弦と五線の対応            | pitch.staff-names                     |
-| guitar.low-position    | ローポジションの音符→フレット | guitar.open-strings                   |
-| guitar.multi-positions | 同じ音の複数ポジション        | guitar.low-position, pitch.octaves    |
-| guitar.tab-mapping     | TAB譜⇄五線譜の読み替え        | guitar.low-position                   |
+| concept_id             | name（日本語）                | depends_on                            | 譜例 |
+| ---------------------- | ----------------------------- | ------------------------------------- | ---- |
+| guitar.open-strings    | 開放弦と五線の対応            | pitch.staff-names                     | 2 |
+| guitar.low-position    | ローポジションの音符→フレット | guitar.open-strings                   | 3 |
+| guitar.multi-positions | 同じ音の複数ポジション        | guitar.low-position, pitch.octaves    | 2 |
+| guitar.tab-mapping     | TAB譜⇄五線譜の読み替え        | guitar.low-position                   | 2 |
 
 #### Domain: structure
 
@@ -281,10 +286,10 @@ alphaTex のタイ記法を取り違えた譜例が**構文検証を通過した
 | --- | --- | --- | --- |
 | **構文** | `AlphaTexImporter` で実際にパースできるか | `tools/texcheck`（ローカル）/ `ExerciseTexParseTest`（CI 門番） | ✅ |
 | **意味（MIDI）** | ①音の重なりが無い（全譜例が単旋律）②タイに相手がいる ③各小節長が拍子と一致 | `MidiFileGenerator` で生成 MIDI を検査 / `ExerciseMidiSemanticsTest` | ✅ |
-| **意味（主張↔実音）** | コンテンツが主張する音高（`expectPitch`）と実際に鳴る音が一致する。宣言したフレット範囲を逸脱しない | 次段階で追加 | ⛔ |
+| **意味（主張↔実音）** | コンテンツが主張する音高（`expectPitch`）と実際に鳴る音が一致する。宣言したフレット範囲を逸脱しない | `ExerciseFingeringTest`（CI 門番）/ `tools/texcheck`（ローカル） | ✅ |
 | **スキーマ** | id 形式・概念の存在・prerequisites が推移的依存の部分集合・difficulty 範囲 ほか | `ExerciseLoader.validate` / content 全件テスト | ✅ |
 
-**次段階で第三層を追加すること**を guitar ドメイン着手の前提条件とする。
+**第三層の追加**を guitar ドメイン着手の前提条件とした（実装済み）。
 
 なお第三層は当初「記譜音と `fret`/`string` の一致」を検証する想定だったが、
 alphaTex は運指を書いて音高を導出するため、**この 2 つは原理的に不一致になりえない**
@@ -301,7 +306,7 @@ Decomposition is hierarchical; each layer pairs a *view* with a *listen* mode.
 
 | Layer    | Decompose（見る）                  | Listen（聴く）                     | Check（確かめる）              | 状態 |
 | -------- | ---------------------------------- | ---------------------------------- | ------------------------------ | ---- |
-| Note     | tap → 音名・音価・♯♭・フレット位置 | play single note                   | この音はどのフレット？         | 見る/聴く ✅ / 確かめる ⛔ |
+| Note     | tap → 音名・音価・♯♭・フレット位置 | play single note                   | この音はどのフレット？         | 見る ✅（指板図あり）/ 聴く ✅ / 確かめる ⛔ |
 | Rhythm   | 音高を消して音価だけ表示           | click track + rhythm-only playback | 何拍で、どう刻む？             | ⛔ §4.3 |
 | Bar      | 1小節の要素一覧                    | loop bar, tempo 50–100%            | この小節の合計は何拍？         | 聴く ✅ / 他 ⛔ |
 | Phrase   | repeats / sections map（曲の地図） | play section                       | どの順で演奏される？           | ⛔ 後段 |
@@ -318,7 +323,7 @@ Key principle: **explanations are contextual** — the symbol is explained
 alphaTab の座標変換・モデル対応付けはすべて `ScoreLocator` に閉じ込め、
 実機での位置ずれ修正が 1 箇所で済む構造を維持する。
 
-### 4.2 指板可視化（次段階）
+### 4.2 指板可視化（✅ 実装済み）
 
 alphaTab は五線と TAB を描画するが、**指板図は描画しない**。自前の Compose
 コンポーネントとして実装する。
@@ -345,7 +350,7 @@ alphaTex を**全音符が同一音高になるよう変換した譜面**へ差�
 変換ロジックは `:core` に置いてローカルテストできる（Android SDK 不在の
 開発環境という制約を突かない）。
 
-### 4.4 読解確認モード（次段階）
+### 4.4 読解確認モード（次段階 — Phase 2 後半）
 
 §1.3 の答え合わせ型能動リコールの UI 面。**既存のタップ解説を置き換えず、
 モードとして切り替える**（読解モード ⇄ 確認モード）。
@@ -415,26 +420,29 @@ alphaTab の Android 組み込み・alphaTex 描画・内蔵シンセ再生・�
 エクササイズスキーマ + カタログ + 進捗（SQLite）、rhythm ドメイン全 9 概念 22 譜例、
 タップ解説、単音/小節再生、概念マップ画面、メトロノーム/カウントイン。
 
-### ▶ Phase 2 — ギター読解の核（次段階）
+### ✅ Phase 2 前半 — ギター読解の核（完了）
 
-**主題**: 「五線の音 → 指板の位置」の変換を、教えられ・確かめられる状態にする。
-これがアプリの存在意義（*ギター奏者のための*読解ツール）を成立させる。
+**主題**: 「五線の音 → 指板の位置」の変換を、教えられる状態にする。
+実装計画と実施記録は `docs/PHASE2_GUITAR_PLAN.md`。
 
-前提として先に片づけるもの：
+前提として先に片づけたもの：
 
 1. **`assumedKnown` の導入**（§2.3）— これ無しでは guitar ドメインが永久 LOCKED
-2. **記譜↔運指の意味検証**（§3.4 第三層）— これ無しではコンテンツを信用できない
+2. **主張↔実音の意味検証**（§3.4 第三層）— これ無しではコンテンツを信用できない
 
 本体：
 
-3. **コンテンツ**: guitar 4 概念 + pitch 2〜3 概念（§2.2 の閉包）
-4. **指板可視化**（§4.2）— `:core` に位置計算、`:app` に描画
+3. **コンテンツ**: guitar 4 概念 9 譜例 + pitch 3 概念 6 譜例（§2.2 の閉包）
+4. **指板可視化**（§4.2）— `:core` に位置計算、`:app` に描画。代替ポジションは導出
+
+### ▶ Phase 2 後半 — 確かめる（次段階）
+
 5. **読解確認モード**（§1.3 / §4.4）— 答え合わせ型の能動リコール。問いは譜面と
-   `focusElements` から自動生成し、既存 22 譜例をそのまま確認問題として使う。採点はしない
+   `focusElements` から自動生成し、既存 37 譜例をそのまま確認問題として使う。採点はしない
 6. **レイヤー再生**（§4.3）— rhythm 資産の価値を最大化
 
 **スコープ外（意図的に外すもの）**: 曲の持ち込み（Phase 3）、定着の仕組みの実装
-（Phase 4。設計のみ本書に記載）。次段階は「ギター読解の核を一本通す」ことに集中し、
+（Phase 4。設計のみ本書に記載）。「ギター読解の核を一本通す」ことに集中し、
 幅を広げない。
 
 ### Phase 3 — 持ち込み曲
@@ -451,7 +459,7 @@ alphaTab の Android 組み込み・alphaTex 描画・内蔵シンセ再生・�
 
 ### Phase 4 — 定着（設計のみ確定。実装は Phase 2/3 の後）
 
-**設計意図**: Phase 2 で譜例が倍増して初めて「復習する価値のある量」になる。
+**設計意図**: Phase 2 前半で譜例が 22 → 37 に増え、「復習する価値のある量」になった。
 また §4.4 の確認モードが「どの概念がまだ変換できないか」の記録を生むため、
 その記録を入力として使う。**両方が揃うまで実装しない**（先に作っても入力が無い）。
 
@@ -496,7 +504,8 @@ rev.1 から解決したもの：
 rev.2 で未解決のもの：
 
 - [ ] **Q1**: `assumedKnown` をタクソノミー固定にするか、オンボーディングでユーザーに
-      尋ねて可変にするか（初期実装は固定、将来可変を想定 — §2.3）
+      尋ねて可変にするか（§2.3）。**実装はタクソノミー固定で入った**（`pitch.staff-names`
+      のみ true）。可変化の要否は、対象ユーザーが自分以外に広がってから判断する
 - [x] ~~**Q2**: `multi-positions` の代替ポジションを `noteText` の文章で扱うか、
       スキーマとして構造化するか（§3.2）~~ → **解決**。どちらでもなく、
       音高とチューニングから `:core` が**導出する**（著述しない）。文章では機械検証できず、
@@ -519,7 +528,7 @@ rev.2 で未解決のもの：
 | --- | --- |
 | `docs/IMPLEMENTATION_PLAN.md` | Phase 0–1 の実装計画。モジュール構成・`:core` API 契約・検証戦略 |
 | `docs/RHYTHM_COMPLETION_PLAN.md` | rhythm ドメイン残り 4 概念の追加計画 |
-| `docs/PHASE2_GUITAR_PLAN.md` | Phase 2 前半の実装計画。既習概念・記譜↔運指の検証層・guitar/pitch コンテンツ・指板図 |
+| `docs/PHASE2_GUITAR_PLAN.md` | Phase 2 前半の実装計画と実施記録。既習概念・主張↔実音の検証層・guitar/pitch コンテンツ・指板図 |
 | `docs/AUDIO_DEFECT_PLAN.md` | 音の不具合の調査記録。タイ記法の取り違えと機械検証の必要性（§3.4 の根拠） |
 | `docs/METRONOME_PLAN.md` | メトロノーム・カウントインの設計 |
 | `docs/alphatab-api-notes.md` | alphaTab 1.8.4 の API 一次資料（AAR から抽出。公式サイトが開発環境から遮断されているため） |
