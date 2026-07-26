@@ -262,7 +262,7 @@ rhythm の全譜例は `2.2.x`（同一弦・同一フレット）で書けた�
 2. **スキーマ拡張の可能性** — `guitar.multi-positions`（同じ音の複数ポジション）は
    「1 つの音に対する代替ポジション」を表現する必要がある。`focusElements.noteText`
    に文章で書いて済ませるか、構造化するかは実装計画で決める（§8 Q2）。
-3. **表示要素が増える** — 指板図（§4.3）。
+3. **表示要素が増える** — 指板図（§4.2）。
 
 ### 3.3 Variant generation（バリエーション量産）
 
@@ -281,10 +281,17 @@ alphaTex のタイ記法を取り違えた譜例が**構文検証を通過した
 | --- | --- | --- | --- |
 | **構文** | `AlphaTexImporter` で実際にパースできるか | `tools/texcheck`（ローカル）/ `ExerciseTexParseTest`（CI 門番） | ✅ |
 | **意味（MIDI）** | ①音の重なりが無い（全譜例が単旋律）②タイに相手がいる ③各小節長が拍子と一致 | `MidiFileGenerator` で生成 MIDI を検査 / `ExerciseMidiSemanticsTest` | ✅ |
-| **意味（記譜↔運指）** | 記譜された音高と `fret`/`string` の組が一致する。ポジション範囲の逸脱がない | 次段階で追加 | ⛔ |
+| **意味（主張↔実音）** | コンテンツが主張する音高（`expectPitch`）と実際に鳴る音が一致する。宣言したフレット範囲を逸脱しない | 次段階で追加 | ⛔ |
 | **スキーマ** | id 形式・概念の存在・prerequisites が推移的依存の部分集合・difficulty 範囲 ほか | `ExerciseLoader.validate` / content 全件テスト | ✅ |
 
 **次段階で第三層を追加すること**を guitar ドメイン着手の前提条件とする。
+
+なお第三層は当初「記譜音と `fret`/`string` の一致」を検証する想定だったが、
+alphaTex は運指を書いて音高を導出するため、**この 2 つは原理的に不一致になりえない**
+（検証として空振りする）。実際に起きる誤りは「解説文は『ド』なのに実際は別の音が鳴る」
+という**コンテンツの主張と実音のズレ**である。したがってコンテンツに主張を書かせ
+（`FocusElement.expectPitch`）、それを機械が検算する形にする。
+詳細は `docs/PHASE2_GUITAR_PLAN.md` §3.1。
 
 ## 4. Interaction Model: Decompose by Layer
 
@@ -490,8 +497,11 @@ rev.2 で未解決のもの：
 
 - [ ] **Q1**: `assumedKnown` をタクソノミー固定にするか、オンボーディングでユーザーに
       尋ねて可変にするか（初期実装は固定、将来可変を想定 — §2.3）
-- [ ] **Q2**: `multi-positions` の代替ポジションを `noteText` の文章で扱うか、
-      スキーマとして構造化するか（§3.2）
+- [x] ~~**Q2**: `multi-positions` の代替ポジションを `noteText` の文章で扱うか、
+      スキーマとして構造化するか（§3.2）~~ → **解決**。どちらでもなく、
+      音高とチューニングから `:core` が**導出する**（著述しない）。文章では機械検証できず、
+      リストの著述は書き間違いという新しい誤りの源になる。導出なら検証も表示も
+      同じロジックから出る。詳細と副次効果は `docs/PHASE2_GUITAR_PLAN.md` §3.2
 - [ ] **Q3**: レイヤー再生を alphaTex のテキスト変換で実装するか、
       パース済みモデルの操作で実装するか（§4.3）
 - [ ] **Q4**: alphaTab の MusicXML 対応度（ドキュメントが "experimental" と "Mature" で
@@ -509,6 +519,7 @@ rev.2 で未解決のもの：
 | --- | --- |
 | `docs/IMPLEMENTATION_PLAN.md` | Phase 0–1 の実装計画。モジュール構成・`:core` API 契約・検証戦略 |
 | `docs/RHYTHM_COMPLETION_PLAN.md` | rhythm ドメイン残り 4 概念の追加計画 |
+| `docs/PHASE2_GUITAR_PLAN.md` | Phase 2 前半の実装計画。既習概念・記譜↔運指の検証層・guitar/pitch コンテンツ・指板図 |
 | `docs/AUDIO_DEFECT_PLAN.md` | 音の不具合の調査記録。タイ記法の取り違えと機械検証の必要性（§3.4 の根拠） |
 | `docs/METRONOME_PLAN.md` | メトロノーム・カウントインの設計 |
 | `docs/alphatab-api-notes.md` | alphaTab 1.8.4 の API 一次資料（AAR から抽出。公式サイトが開発環境から遮断されているため） |
