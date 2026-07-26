@@ -4,6 +4,7 @@ import alphaTab.model.Beat
 import alphaTab.model.Note
 import dev.fumiwake.core.exercise.Exercise
 import dev.fumiwake.core.exercise.FocusElement
+import dev.fumiwake.core.music.FretPosition
 
 /**
  * All alphaTab-model <-> [FocusElement] addressing lives here
@@ -63,5 +64,26 @@ object ScoreLocator {
         return exercise.focusElements.firstOrNull {
             it.barIndex == loc.barIndex && it.beatIndex == loc.beatIndex && it.noteIndex == null
         }
+    }
+
+    /**
+     * Where [note] is played, in the numbering everything outside alphaTab uses:
+     * **1 = the highest-sounding string**, as in alphaTex's `<fret>.<string>.<duration>`
+     * and in "the 6th string" meaning the low E.
+     *
+     * alphaTab's own [Note.string] counts the other way — its string 1 is the *lowest*
+     * string — so `0.6.4` in a bundled exercise arrives here as `note.string == 1`. The
+     * flip lives in this object because addressing translation is exactly what this object
+     * is for; `:core` never sees alphaTab's numbering, and neither does any UI.
+     *
+     * The string count comes from the score's own tuning rather than a hardcoded 6, so a
+     * future non-six-string tuning does not silently invert every position.
+     */
+    fun fingeringOf(note: Note): FretPosition {
+        val stringCount = note.beat.voice.bar.staff.tuning.length.toInt()
+        return FretPosition(
+            string = stringCount + 1 - note.string.toInt(),
+            fret = note.fret.toInt(),
+        )
     }
 }

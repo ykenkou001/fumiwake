@@ -214,6 +214,120 @@ class ExerciseLoaderTest {
         assertEquals(emptyList(), ExerciseLoader.validate(baseExercise(variantOf = null), graph))
     }
 
+    // --- expectPitch / fretRange（DESIGN.md §3.4 第三層の入力） ---
+
+    private val guitarGraph = ConceptGraph(
+        listOf(
+            Concept("pitch.staff-names", "五線上の音名", assumedKnown = true),
+            Concept("guitar.open-strings", "開放弦", listOf("pitch.staff-names")),
+            Concept("pitch.octaves", "オクターブ", listOf("pitch.staff-names")),
+        )
+    )
+
+    private fun guitarExercise(
+        conceptId: String = "guitar.open-strings",
+        exerciseId: String = "guitar.open-strings.001",
+        focusElements: List<FocusElement> = listOf(FocusElement(0, 0, 0, "note", expectPitch = "E2")),
+        fretRange: FretRange? = FretRange(0, 0),
+    ) = Exercise(
+        exerciseId = exerciseId,
+        conceptId = conceptId,
+        prerequisites = listOf("pitch.staff-names"),
+        titleJa = "title",
+        alphatex = "0.6.4 |",
+        explanationJa = "explanation",
+        focusElements = focusElements,
+        difficulty = 1,
+        fretRange = fretRange,
+    )
+
+    @Test
+    fun `validate accepts a well-formed guitar exercise`() {
+        assertEquals(emptyList(), ExerciseLoader.validate(guitarExercise(), guitarGraph))
+    }
+
+    @Test
+    fun `validate requires expectPitch where pitch is the subject`() {
+        for (conceptId in listOf("guitar.open-strings", "pitch.octaves")) {
+            val errors = ExerciseLoader.validate(
+                guitarExercise(
+                    conceptId = conceptId,
+                    exerciseId = "$conceptId.001",
+                    focusElements = listOf(FocusElement(0, 0, 0, "note")),
+                ),
+                guitarGraph,
+            )
+            assertTrue(errors.any { it.contains("expectPitch") }, "expected an error for $conceptId, got: $errors")
+        }
+    }
+
+    @Test
+    fun `validate leaves expectPitch optional where pitch is incidental`() {
+        // rhythm は全音符を同じ音高にして書く。主張を強制しても意味がない。
+        assertEquals(emptyList(), ExerciseLoader.validate(baseExercise(), graph))
+    }
+
+    @Test
+    fun `validate rejects expectPitch that is not pitch notation`() {
+        val errors = ExerciseLoader.validate(
+            guitarExercise(focusElements = listOf(FocusElement(0, 0, 0, "note", expectPitch = "ミ"))),
+            guitarGraph,
+        )
+        assertTrue(errors.any { it.contains("expectPitch") }, errors.toString())
+    }
+
+    @Test
+    fun `validate requires fretRange on guitar exercises`() {
+        val errors = ExerciseLoader.validate(guitarExercise(fretRange = null), guitarGraph)
+        assertTrue(errors.any { it.contains("fretRange") }, errors.toString())
+    }
+
+    @Test
+    fun `validate rejects an inverted or out-of-range fretRange`() {
+        val inverted = ExerciseLoader.validate(guitarExercise(fretRange = FretRange(5, 2)), guitarGraph)
+        assertTrue(inverted.any { it.contains("fretRange") }, inverted.toString())
+
+        val tooHigh = ExerciseLoader.validate(guitarExercise(fretRange = FretRange(0, 25)), guitarGraph)
+        assertTrue(tooHigh.any { it.contains("fretRange") }, tooHigh.toString())
+
+        val negative = ExerciseLoader.validate(guitarExercise(fretRange = FretRange(-1, 4)), guitarGraph)
+        assertTrue(negative.any { it.contains("fretRange") }, negative.toString())
+    }
+
+    @Test
+    fun `validate rejects expectPitch on a whole-beat focus`() {
+        val errors = ExerciseLoader.validate(
+            guitarExercise(focusElements = listOf(FocusElement(0, 0, null, "x", expectPitch = "E2"))),
+            guitarGraph,
+        )
+        assertTrue(errors.any { it.contains("expectPitch") }, errors.toString())
+    }
+
+    @Test
+    fun `validate does not demand expectPitch for a whole-beat focus`() {
+        // 休符など、単一の音高を持たない位置。主張しようがないので要求しない。
+        assertEquals(
+            emptyList(),
+            ExerciseLoader.validate(
+                guitarExercise(focusElements = listOf(FocusElement(0, 0, null, "休符"))),
+                guitarGraph,
+            ),
+        )
+    }
+
+    @Test
+    fun `validate accepts enharmonic spellings of expectPitch`() {
+        for (spelling in listOf("A#2", "Bb2", "B♭2")) {
+            val errors = ExerciseLoader.validate(
+                guitarExercise(
+                    focusElements = listOf(FocusElement(0, 0, 0, "note", expectPitch = spelling)),
+                ),
+                guitarGraph,
+            )
+            assertEquals(emptyList(), errors, "expected '$spelling' to be accepted")
+        }
+    }
+
     @Test
     fun `validate can return multiple errors at once`() {
         val errors = ExerciseLoader.validate(

@@ -29,4 +29,11 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
     systemProperty("fumiwake.content.dir", rootDir.resolve("content/exercises").absolutePath)
+
+    // 同梱コンテンツはテストの入力である（ContentExercisesTest / ConceptReachabilityTest が
+    // 読む）。宣言しないと、コンテンツだけを変更したときに Gradle が UP-TO-DATE と判断して
+    // 検証テストを飛ばしてしまう。コンテンツ追加こそ最も検証が要る変更なので、これは危険。
+    inputs.dir(rootDir.resolve("content/exercises"))
+        .withPropertyName("bundledContent")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }

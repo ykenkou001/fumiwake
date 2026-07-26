@@ -1,0 +1,39 @@
+exerciseId: guitar.tab-mapping.001
+conceptId: guitar.tab-mapping
+prerequisites: ["guitar.low-position"]
+titleJa: "五線とTABを見比べる"
+alphatex: |
+  \title "五線とTABを見比べる"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.4 2.5.4 3.5.4 0.4.4 |
+  2.4.4 3.4.4 0.3.4 2.3.4 |
+  2.3.4 0.3.4 3.4.4 2.4.4 |
+  0.4.4 3.5.4 2.5.4 0.5.4 |
+explanationJa: "画面には五線とTABが上下に並んでいます。TABの6本の線は6本の弦そのもので、一番下の線が6弦、一番上が1弦です。線の上に書かれた数字は押さえるフレット番号で、0は開放弦を意味します。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "TABでは下から2番目の線に「0」。5弦を開放で鳴らす、という意味です。"
+    expectPitch: "A2"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "同じ線の「2」。5弦の2フレットです。"
+    expectPitch: "B2"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "数字が1本上の線に移りました。弦が変わったという意味です。"
+    expectPitch: "D3"
+  - barIndex: 1
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "3弦の開放。五線では音の高さ、TABでは弦とフレットを見ています。"
+    expectPitch: "G3"
+difficulty: 2
+fretRange:
+  min: 0
+  max: 3

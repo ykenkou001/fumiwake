@@ -29,6 +29,17 @@ class ProgressEvaluatorTest {
     private fun newEvaluator(exercises: List<Exercise>, store: ProgressStore = InMemoryProgressStore()) =
         ProgressEvaluator(graph, Catalog(graph, exercises), store) to store
 
+    /** The assumed-known shape from DESIGN.md §2.3: a no-exercise prerequisite of a real concept. */
+    private fun newAssumedKnownEvaluator(store: ProgressStore = InMemoryProgressStore()): Pair<ProgressEvaluator, ProgressStore> {
+        val assumedGraph = ConceptGraph(
+            listOf(
+                Concept("pitch.staff-names", "五線上の音名", assumedKnown = true),
+                Concept("guitar.open-strings", "開放弦", listOf("pitch.staff-names")),
+            )
+        )
+        return ProgressEvaluator(assumedGraph, Catalog(assumedGraph, emptyList()), store) to store
+    }
+
     @Test
     fun `a concept with no dependencies and nothing learned is AVAILABLE`() {
         val (evaluator, _) = newEvaluator(emptyList())
@@ -55,6 +66,20 @@ class ProgressEvaluatorTest {
         store.markConceptLearned("rhythm.tie")
         val (evaluator, _) = newEvaluator(emptyList(), store)
         assertEquals(ConceptStatus.LEARNED, evaluator.statusOf("rhythm.tie"))
+    }
+
+    @Test
+    fun `an assumedKnown concept is LEARNED with an empty progress store`() {
+        val (evaluator, _) = newAssumedKnownEvaluator()
+        assertEquals(ConceptStatus.LEARNED, evaluator.statusOf("pitch.staff-names"))
+    }
+
+    @Test
+    fun `a concept depending only on an assumedKnown concept is AVAILABLE, not LOCKED`() {
+        // DESIGN.md §2.3 の詰みの再現テスト。assumedKnown を statusOf の戻り値にだけ
+        // 効かせて依存充足の判定に混ぜ忘れると、上のテストは通るのにこれが落ちる。
+        val (evaluator, _) = newAssumedKnownEvaluator()
+        assertEquals(ConceptStatus.AVAILABLE, evaluator.statusOf("guitar.open-strings"))
     }
 
     @Test

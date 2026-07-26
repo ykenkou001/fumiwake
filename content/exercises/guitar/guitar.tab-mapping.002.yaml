@@ -1,0 +1,44 @@
+exerciseId: guitar.tab-mapping.002
+conceptId: guitar.tab-mapping
+prerequisites: ["guitar.low-position"]
+titleJa: "同じ数字でも弦が違えば別の音"
+alphatex: |
+  \title "同じ数字でも弦が違えば別の音"
+  \tempo 60
+  .
+  \ts 4 4
+  0.6.4 0.5.4 0.4.4 0.3.4 |
+  5.6.4 5.5.4 5.4.4 5.3.4 |
+  7.6.4 7.5.4 7.4.4 7.3.4 |
+  5.6.4 5.5.4 5.4.4 5.3.4 |
+explanationJa: "各小節ではTABの数字が4つとも同じですが、鳴る音は4つとも違います。TABの数字はフレット番号であって音の高さではないからです。どの線に書かれているかを見なければ音は決まらない、というのがTABを読むときの要点です。"
+focusElements:
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦5フレット。TABの数字は「5」です。"
+    expectPitch: "A2"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "5弦5フレット。数字は同じ「5」ですが、完全4度も高い音になります。"
+    expectPitch: "D3"
+  - barIndex: 1
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "4弦5フレット。やはり同じ「5」です。"
+    expectPitch: "G3"
+  - barIndex: 1
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "3弦5フレット。この小節の4音はTAB上ではすべて同じ数字でした。"
+    expectPitch: "C4"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "今度は全部「7」。2フレット分だけ、さっきの小節より高くなります。"
+    expectPitch: "B2"
+difficulty: 3
+fretRange:
+  min: 0
+  max: 7

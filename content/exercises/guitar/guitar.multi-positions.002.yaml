@@ -1,0 +1,44 @@
+exerciseId: guitar.multi-positions.002
+conceptId: guitar.multi-positions
+prerequisites: ["guitar.low-position", "pitch.octaves"]
+titleJa: "同じフレーズを別のポジションで"
+alphatex: |
+  \title "同じフレーズを別のポジションで"
+  \tempo 60
+  .
+  \ts 4 4
+  3.5.4 0.4.4 2.4.4 3.4.4 |
+  8.6.4 10.6.4 7.5.4 8.5.4 |
+  3.5.4 0.4.4 2.4.4 3.4.4 |
+  8.6.4 10.6.4 7.5.4 8.5.4 |
+explanationJa: "1・3小節目と2・4小節目は、五線上ではまったく同じ4つの音です。前者はローポジション、後者は同じ音を低音弦の高いフレットで弾いています。譜面が同じでも運指の選択肢は複数あり、どれを選ぶかは前後のつながりで決まります。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5弦3フレットの「ド」。ローポジションでの弾き方です。"
+    expectPitch: "C3"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "4弦3フレットの「ファ」。ここまでが1つ目の運指です。"
+    expectPitch: "F3"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦8フレット。五線上は1小節目の頭とまったく同じ「ド」です。"
+    expectPitch: "C3"
+  - barIndex: 1
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "5弦7フレットの「ミ」。手全体が高い位置に移っています。"
+    expectPitch: "E3"
+  - barIndex: 1
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "5弦8フレットの「ファ」。1小節目の最後と同じ音です。"
+    expectPitch: "F3"
+difficulty: 4
+fretRange:
+  min: 0
+  max: 10

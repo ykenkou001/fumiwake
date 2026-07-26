@@ -17,6 +17,13 @@ class ConceptGraph(concepts: List<Concept>) {
 
     private val byId: Map<String, Concept> = all.associateBy { it.id }
 
+    /**
+     * Concepts the user is assumed to already know (DESIGN.md §2.3). These count as
+     * learned regardless of what the progress store holds — see
+     * [dev.fumiwake.core.progress.ProgressEvaluator].
+     */
+    val assumedKnownIds: Set<String> = all.filter { it.assumedKnown }.map { it.id }.toSet()
+
     init {
         val seenIds = mutableSetOf<String>()
         for (concept in all) {
@@ -76,7 +83,12 @@ class ConceptGraph(concepts: List<Concept>) {
         return result
     }
 
-    /** Concepts whose full dependency set is satisfied by [learned], excluding already-learned ones. */
+    /**
+     * Concepts whose full dependency set is satisfied by [learned], excluding already-learned ones.
+     *
+     * [learned] must be the *effective* learned set, i.e. include [assumedKnownIds];
+     * this function takes the set as given and does not add them itself.
+     */
     fun availableConcepts(learned: Set<String>): Set<String> =
         all.asSequence()
             .filter { it.id !in learned }
@@ -134,7 +146,10 @@ class ConceptGraph(concepts: List<Concept>) {
                 Concept("rhythm.compound-meter", "複合拍子（6/8等）", listOf("rhythm.triplet")),
 
                 // pitch (5)
-                Concept("pitch.staff-names", "五線上の音名（既習）"),
+                // 対象ユーザー（既に譜面がある程度読める）向けにエクササイズを作る意味が
+                // ないため、assumedKnown で既習として扱う。これが無いと guitar ドメイン
+                // 全体が永久に LOCKED になる（DESIGN.md §2.3）。
+                Concept("pitch.staff-names", "五線上の音名（既習）", assumedKnown = true),
                 Concept("pitch.ledger-lines", "加線", listOf("pitch.staff-names")),
                 Concept("pitch.accidentals", "♯♭♮（臨時記号）", listOf("pitch.staff-names")),
                 Concept("pitch.key-signatures", "調号", listOf("pitch.accidentals")),

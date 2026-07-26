@@ -68,4 +68,7 @@ if [ "${#files[@]}" -eq 0 ]; then
     exit 0
 fi
 
-java -Dfile.encoding=UTF-8 -classpath "$LIB_DIR:$CLASSPATH" TexCheck "${files[@]}"
+# stdout.encoding は JDK 18+ で file.encoding とは別扱いになったため、両方指定しないと
+# 日本語の検査メッセージが化ける（診断メッセージが読めないと検査の意味がない）。
+java -Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8 \
+    -classpath "$LIB_DIR:$CLASSPATH" TexCheck "${files[@]}"

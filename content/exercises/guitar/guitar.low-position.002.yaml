@@ -1,0 +1,44 @@
+exerciseId: guitar.low-position.002
+conceptId: guitar.low-position
+prerequisites: ["guitar.open-strings"]
+titleJa: "1〜3弦のローポジション"
+alphatex: |
+  \title "1〜3弦のローポジション"
+  \tempo 60
+  .
+  \ts 4 4
+  0.3.4 2.3.4 0.2.4 1.2.4 |
+  3.2.4 0.1.4 1.1.4 3.1.4 |
+  3.1.4 1.1.4 0.1.4 3.2.4 |
+  1.2.4 0.2.4 2.3.4 0.3.4 |
+explanationJa: "今度は高音弦側です。3弦から1弦へ、やはり0〜3フレットだけで上って下ります。2弦と1弦は五線の中から上へ抜けていくので、加線が出てくる手前の高さの感覚をここで作っておきます。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "3弦開放から出発します。"
+    expectPitch: "G3"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "2弦開放。3弦2フレットの半音上です。"
+    expectPitch: "B3"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "2弦1フレット。「ド」で、五線の下から3番目の線の音です。"
+    expectPitch: "C4"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "1弦開放。五線の一番上の空間です。"
+    expectPitch: "E4"
+  - barIndex: 1
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "1弦3フレット。この譜例で一番高い音です。"
+    expectPitch: "G4"
+difficulty: 2
+fretRange:
+  min: 0
+  max: 3

@@ -49,6 +49,8 @@ import dev.fumiwake.app.data.PlaybackPreferences
 import dev.fumiwake.app.score.ExerciseScoreView
 import dev.fumiwake.app.score.ScoreLocator
 import dev.fumiwake.core.music.DurationTexts
+import dev.fumiwake.core.music.FretPosition
+import dev.fumiwake.core.music.FretPositions
 import dev.fumiwake.core.music.NoteNames
 import dev.fumiwake.core.progress.ConceptStatus
 import kotlinx.coroutines.delay
@@ -105,6 +107,7 @@ fun ExerciseScreen(
     var playerState by remember(exerciseId) { mutableStateOf(PlayerState.Paused) }
     var playerStatus by remember(exerciseId) { mutableStateOf<PlayerStatus>(PlayerStatus.Loading) }
     var panelText by remember(exerciseId) { mutableStateOf(exercise.explanationJa) }
+    var tappedPosition by remember(exerciseId) { mutableStateOf<FretPosition?>(null) }
     val apiState = remember(exerciseId) { mutableStateOf<AlphaTabApiBase<AlphaTabView>?>(null) }
 
     // 音源（サウンドフォント）・シンセの初期化は通常すぐ終わる。一定時間 ready にも
@@ -143,12 +146,16 @@ fun ExerciseScreen(
                 onNoteTap = { note ->
                     panelText = ScoreLocator.findFocus(exercise, note)?.noteText
                         ?: genericNoteInfo(note)
+                    tappedPosition = ScoreLocator.fingeringOf(note)
                     apiState.value?.playNote(note)
                 },
                 onBeatTap = { beat ->
                     if (beat.isRest) {
                         panelText = ScoreLocator.findFocus(exercise, beat)?.noteText
                             ?: genericRestInfo(beat)
+                        // 休符には位置が無い。前の音の位置を残すと、鳴っていない音を
+                        // 指しているように見えるので消す。
+                        tappedPosition = null
                     }
                 },
                 onPlayerStateChanged = { state -> playerState = state },
@@ -162,6 +169,23 @@ fun ExerciseScreen(
                     .weight(1f)
                     .fillMaxWidth(),
             )
+            }
+
+            // 指板図は fretRange を持つ譜例（guitar / pitch）にだけ出す。rhythm の譜例は
+            // 全音符を同じ位置で書いており、指板図を出しても情報が無い。既存 22 譜例は
+            // fretRange を持たないので、自動的に対象外になる。
+            val fretRange = exercise.fretRange
+            if (fretRange != null) {
+                val position = tappedPosition
+                FretboardView(
+                    fretRange = fretRange,
+                    highlighted = listOfNotNull(position),
+                    // 同じ音の他の位置は :core が導出する（DESIGN.md §8 Q2）。
+                    alternatives = position
+                        ?.let { FretPositions.otherPositionsOf(it, fretRange.min, fretRange.max) }
+                        .orEmpty(),
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
 
             // 音源準備の進行・失敗を再生ボタンの直上に見せる（無言失敗の可視化）。
