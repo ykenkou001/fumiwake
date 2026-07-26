@@ -64,4 +64,47 @@ class NoteNamesTest {
     fun `octave boundary just above B4 is C5`() {
         assertEquals("ド (C5)", NoteNames.fromMidi(72))
     }
+
+    @Test
+    fun `scientific drops the katakana reading`() {
+        assertEquals("C4", NoteNames.scientific(60))
+        assertEquals("E2", NoteNames.scientific(40))
+        assertEquals("A#3", NoteNames.scientific(58))
+    }
+
+    @Test
+    fun `toMidi parses naturals and sharps`() {
+        assertEquals(60, NoteNames.toMidi("C4"))
+        assertEquals(40, NoteNames.toMidi("E2"))
+        assertEquals(66, NoteNames.toMidi("F#4"))
+    }
+
+    @Test
+    fun `toMidi treats enharmonic spellings as the same pitch`() {
+        // コンテンツは文脈に合う表記で書ける。検証は MIDI で行うので結果は表記に依存しない。
+        assertEquals(NoteNames.toMidi("A#3"), NoteNames.toMidi("Bb3"))
+        assertEquals(NoteNames.toMidi("C#3"), NoteNames.toMidi("Db3"))
+        assertEquals(58, NoteNames.toMidi("B♭3"))
+    }
+
+    @Test
+    fun `toMidi distinguishes the note B from a flat sign`() {
+        assertEquals(59, NoteNames.toMidi("B3"))
+        assertEquals(58, NoteNames.toMidi("Bb3"))
+    }
+
+    @Test
+    fun `toMidi round-trips every pitch on the fretboard`() {
+        for (midi in 40..88) {
+            assertEquals(midi, NoteNames.toMidi(NoteNames.scientific(midi)))
+        }
+    }
+
+    @Test
+    fun `toMidi rejects what is not pitch notation`() {
+        // null を返す（例外にしない）ので、呼び出し側は検証エラーとして報告できる。
+        for (bad in listOf("", "H4", "C", "4", "ド", "C#", "C4x", "C 4")) {
+            assertEquals(null, NoteNames.toMidi(bad), "expected null for '$bad'")
+        }
+    }
 }
