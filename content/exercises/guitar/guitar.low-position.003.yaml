@@ -1,0 +1,49 @@
+exerciseId: guitar.low-position.003
+conceptId: guitar.low-position
+prerequisites: ["guitar.open-strings"]
+titleJa: "6本の弦を通して上がる（Cメジャー）"
+alphatex: |
+  \title "6本の弦を通して上がる（Cメジャー）"
+  \tempo 60
+  .
+  \ts 4 4
+  0.6.4 1.6.4 3.6.4 0.5.4 |
+  2.5.4 3.5.4 0.4.4 2.4.4 |
+  3.4.4 0.3.4 2.3.4 0.2.4 |
+  1.2.4 3.2.4 0.1.4 1.1.4 |
+explanationJa: "6弦から1弦まで、ローポジションだけで途切れずに上がっていきます。使うのは0〜3フレットの範囲だけで、手はほとんど動きません。弦が変わっても音は連続しているという感覚が、譜面を読むときの土台になります。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦開放。ここから1弦まで一続きで上がります。"
+    expectPitch: "E2"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "5弦開放へ。6弦3フレットから弦をまたぎましたが、音は続いています。"
+    expectPitch: "A2"
+  - barIndex: 1
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "4弦開放。ここで五線の中に入ります。"
+    expectPitch: "D3"
+  - barIndex: 2
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "3弦開放。"
+    expectPitch: "G3"
+  - barIndex: 2
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "2弦開放。ここだけ弦をまたぐ幅が半音ぶん狭くなります。"
+    expectPitch: "B3"
+  - barIndex: 3
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "1弦開放。6弦開放から2オクターブ上がってきました。"
+    expectPitch: "E4"
+difficulty: 3
+fretRange:
+  min: 0
+  max: 3

@@ -1,0 +1,48 @@
+exerciseId: guitar.low-position.001
+conceptId: guitar.low-position
+prerequisites: ["guitar.open-strings"]
+titleJa: "5弦・6弦のローポジション"
+alphatex: |
+  \title "5弦・6弦のローポジション"
+  \tempo 60
+  .
+  \ts 4 4
+  0.6.4 1.6.4 3.6.4 0.5.4 |
+  2.5.4 3.5.4 2.5.4 0.5.4 |
+  3.6.4 1.6.4 0.6.2 |
+explanationJa: "開放弦を起点に、そこから何フレット上かで音を読みます。低音弦の0〜3フレットだけを使い、上って下りて戻ります。押さえる指ではなく、まず「開放弦から数フレット目か」で音名を言えるようにしてください。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦開放。ここが基準です。"
+    expectPitch: "E2"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "6弦1フレット。開放弦の半音上です。"
+    expectPitch: "F2"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "6弦3フレット。1フレットからさらに全音（2フレット）上がりました。"
+    expectPitch: "G2"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "5弦開放。6弦3フレットの全音上で、弦をまたいで続いています。"
+    expectPitch: "A2"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5弦2フレット。"
+    expectPitch: "B2"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "5弦3フレット。この譜例で一番高い音で、「ド」です。"
+    expectPitch: "C3"
+difficulty: 2
+fretRange:
+  min: 0
+  max: 3

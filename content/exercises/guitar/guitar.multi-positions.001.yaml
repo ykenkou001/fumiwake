@@ -1,0 +1,49 @@
+exerciseId: guitar.multi-positions.001
+conceptId: guitar.multi-positions
+prerequisites: ["guitar.low-position", "pitch.octaves"]
+titleJa: "同じ音が2箇所にある"
+alphatex: |
+  \title "同じ音が2箇所にある"
+  \tempo 60
+  .
+  \ts 4 4
+  0.5.4 5.6.4 0.5.4 5.6.4 |
+  0.4.4 5.5.4 0.4.4 5.5.4 |
+  0.3.4 5.4.4 0.3.4 5.4.4 |
+  0.1.4 5.2.4 0.1.2 |
+explanationJa: "五線に書かれた1つの音に対して、押さえる場所は1つとは限りません。この譜例では同じ音を「開放弦」と「1本下の弦の5フレット」で交互に鳴らします。音は同じで音色だけが違う、という点を耳でも確かめてください。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5弦開放の「ラ」。"
+    expectPitch: "A2"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "6弦5フレット。五線上ではさっきと同じ位置に書かれる、同じ「ラ」です。"
+    expectPitch: "A2"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4弦開放の「レ」。"
+    expectPitch: "D3"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "5弦5フレット。同じ「レ」です。"
+    expectPitch: "D3"
+  - barIndex: 3
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "1弦開放の「ミ」。"
+    expectPitch: "E4"
+  - barIndex: 3
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "2弦5フレット。ここも同じ「ミ」です。"
+    expectPitch: "E4"
+difficulty: 3
+fretRange:
+  min: 0
+  max: 5

@@ -1,0 +1,43 @@
+exerciseId: guitar.open-strings.002
+conceptId: guitar.open-strings
+prerequisites: ["pitch.staff-names"]
+titleJa: "開放弦だけで上って下りる"
+alphatex: |
+  \title "開放弦だけで上って下りる"
+  \tempo 60
+  .
+  \ts 4 4
+  0.6.4 0.5.4 0.4.4 0.3.4 |
+  0.2.4 0.1.4 0.1.4 0.2.4 |
+  0.3.4 0.4.4 0.5.4 0.6.4 |
+explanationJa: "6弦から1弦へ上がり、また6弦へ戻ります。隣り合う弦どうしの音の距離が一定ではないことに気づいてください。3弦と2弦の間だけが他より狭く、これがギターの指板を少しややこしくしている原因です。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦開放から出発します。"
+    expectPitch: "E2"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "3弦開放。ここまでは弦をまたぐたびに同じ幅で上がってきました。"
+    expectPitch: "G3"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2弦開放。3弦からの幅だけが、他より1つぶん狭くなっています。"
+    expectPitch: "B3"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "1弦開放。折り返し地点です。"
+    expectPitch: "E4"
+  - barIndex: 2
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "6弦開放に戻ってきました。"
+    expectPitch: "E2"
+difficulty: 1
+fretRange:
+  min: 0
+  max: 0

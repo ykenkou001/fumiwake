@@ -1,0 +1,48 @@
+exerciseId: guitar.open-strings.001
+conceptId: guitar.open-strings
+prerequisites: ["pitch.staff-names"]
+titleJa: "6本の開放弦と五線"
+alphatex: |
+  \title "6本の開放弦と五線"
+  \tempo 60
+  .
+  \ts 4 4
+  0.6.2 0.5.2 |
+  0.4.2 0.3.2 |
+  0.2.2 0.1.2 |
+explanationJa: "何も押さえずに鳴らす6本の弦が、五線のどこに書かれるかを覚えるのが出発点です。低い方から順に1本ずつ鳴らします。ここが頭に入っていれば、押さえた音は「開放弦から何フレット上か」で読めるようになります。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦（一番太い弦）の開放。五線のずっと下、加線3本の位置です。"
+    expectPitch: "E2"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "5弦の開放。加線2本です。"
+    expectPitch: "A2"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4弦の開放。ここから五線に入ってきます。"
+    expectPitch: "D3"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "3弦の開放。五線の中ほどです。"
+    expectPitch: "G3"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "2弦の開放。"
+    expectPitch: "B3"
+  - barIndex: 2
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "1弦（一番細い弦）の開放。6本の中で一番高い音です。"
+    expectPitch: "E4"
+difficulty: 1
+fretRange:
+  min: 0
+  max: 0
