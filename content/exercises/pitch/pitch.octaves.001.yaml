@@ -1,0 +1,48 @@
+exerciseId: pitch.octaves.001
+conceptId: pitch.octaves
+prerequisites: ["pitch.ledger-lines"]
+titleJa: "同じ音名、違うオクターブ"
+alphatex: |
+  \title "同じ音名、違うオクターブ"
+  \tempo 60
+  .
+  \ts 4 4
+  3.5.4 1.2.4 3.5.4 1.2.4 |
+  0.5.4 2.3.4 0.5.4 2.3.4 |
+  0.4.4 3.2.4 0.4.2 |
+explanationJa: "「ド」は1つではありません。オクターブ上の「ド」は音名が同じで、五線上の位置だけが違います。この譜例は3組の音を交互に鳴らします。音名が同じでも指板上はまったく別の場所だ、ということを確かめてください。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5弦3フレットの「ド」。低い方です。"
+    expectPitch: "C3"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "2弦1フレットの「ド」。1オクターブ上で、指板上は遠く離れた場所です。"
+    expectPitch: "C4"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5弦開放の「ラ」。"
+    expectPitch: "A2"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "3弦2フレットの「ラ」。1オクターブ上です。"
+    expectPitch: "A3"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4弦開放の「レ」。"
+    expectPitch: "D3"
+  - barIndex: 2
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "2弦3フレットの「レ」。1オクターブ上です。"
+    expectPitch: "D4"
+difficulty: 2
+fretRange:
+  min: 0
+  max: 3

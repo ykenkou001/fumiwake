@@ -1,0 +1,43 @@
+exerciseId: pitch.octaves.002
+conceptId: pitch.octaves
+prerequisites: ["pitch.ledger-lines"]
+titleJa: "3オクターブの「ミ」を読み分ける"
+alphatex: |
+  \title "3オクターブの「ミ」を読み分ける"
+  \tempo 60
+  .
+  \ts 4 4
+  0.6.4 2.4.4 0.1.4 2.4.4 |
+  0.6.2 0.1.2 |
+  0.6.4 2.4.4 0.1.2 |
+explanationJa: "ギターは同じ音名が3オクターブにわたって出てきます。この譜例はすべて「ミ」ですが、五線上の位置は下の加線・五線の中・上の加線と大きく離れます。加線の本数で高さを見分けるのが、実際の譜面を読むときの手がかりになります。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦開放の「ミ」。一番低く、下に加線が3本つきます。"
+    expectPitch: "E2"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "4弦2フレットの「ミ」。1オクターブ上で、五線の中に収まります。"
+    expectPitch: "E3"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "1弦開放の「ミ」。さらに1オクターブ上です。"
+    expectPitch: "E4"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "低い「ミ」と高い「ミ」を続けて。2オクターブ離れています。"
+    expectPitch: "E2"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "2オクターブ上の「ミ」。同じ音名なのに五線上の距離はこれだけあります。"
+    expectPitch: "E4"
+difficulty: 3
+fretRange:
+  min: 0
+  max: 2

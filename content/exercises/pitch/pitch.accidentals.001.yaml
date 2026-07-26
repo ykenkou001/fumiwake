@@ -1,0 +1,48 @@
+exerciseId: pitch.accidentals.001
+conceptId: pitch.accidentals
+prerequisites: ["pitch.staff-names"]
+titleJa: "♯は1フレット上"
+alphatex: |
+  \title "♯は1フレット上"
+  \tempo 60
+  .
+  \ts 4 4
+  3.4.4 4.4.4 3.4.4 0.3.4 |
+  0.3.4 1.3.4 0.3.4 2.3.4 |
+  3.5.4 4.5.4 3.5.4 3.5.4 |
+explanationJa: "ギターのフレットは1つで半音です。だから五線に♯がついたら、指を1フレット高い方へずらすだけで済みます。同じ弦の上で1つ動くという対応を、3組の音で確かめてください。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4弦3フレット。まずは♯のつかない音から。"
+    expectPitch: "F3"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "♯がつきました。同じ4弦のまま1フレット上へ動きます。"
+    expectPitch: "F#3"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "♮で元に戻り、指も元のフレットへ戻ります。"
+    expectPitch: "F3"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "3弦の開放弦。ここが基準です。"
+    expectPitch: "G3"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "開放弦に♯がついたら1フレットを押さえます。"
+    expectPitch: "G#3"
+  - barIndex: 2
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "5弦でも同じ関係です。3フレットの半音上は4フレット。"
+    expectPitch: "C#3"
+difficulty: 2
+fretRange:
+  min: 0
+  max: 4

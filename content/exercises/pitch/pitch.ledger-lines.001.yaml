@@ -1,0 +1,48 @@
+exerciseId: pitch.ledger-lines.001
+conceptId: pitch.ledger-lines
+prerequisites: ["pitch.staff-names"]
+titleJa: "五線の上に出る音"
+alphatex: |
+  \title "五線の上に出る音"
+  \tempo 60
+  .
+  \ts 4 4
+  0.1.4 3.1.4 5.1.4 7.1.4 |
+  8.1.2 7.1.2 |
+  5.1.4 3.1.4 0.1.2 |
+explanationJa: "五線には5本しか線がないので、高い音は線の上に短い線（加線）を足して書きます。この譜例は1弦だけを使い、開放弦から少しずつ上がっていきます。どこから加線が必要になるかを目で追ってください。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "1弦の開放弦。まだ五線の中に収まっています。"
+    expectPitch: "E4"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "1弦3フレット。五線の一番上の線より上ですが、まだ加線は要りません。"
+    expectPitch: "G4"
+  - barIndex: 0
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "1弦5フレット。ここで最初の加線が1本つきます。"
+    expectPitch: "A4"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "1弦7フレット。加線1本の上の空間に置かれます。"
+    expectPitch: "B4"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "1弦8フレット。加線が2本になりました。"
+    expectPitch: "C5"
+  - barIndex: 2
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "開放弦に戻ってきました。加線が消えます。"
+    expectPitch: "E4"
+difficulty: 2
+fretRange:
+  min: 0
+  max: 8

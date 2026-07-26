@@ -1,0 +1,43 @@
+exerciseId: pitch.accidentals.002
+conceptId: pitch.accidentals
+prerequisites: ["pitch.staff-names"]
+titleJa: "♭は1フレット下、そして異名同音"
+alphatex: |
+  \title "♭は1フレット下、そして異名同音"
+  \tempo 60
+  .
+  \ts 4 4
+  2.5.4 1.5.4 2.5.4 0.5.4 |
+  2.4.4 1.4.4 2.4.4 0.4.4 |
+  1.5.4 1.5.4 1.5.2 |
+explanationJa: "♭は♯の逆で、1フレット低い方へ動きます。3小節目の3つの音はすべて同じ位置ですが、五線では「ラ♯」とも「シ♭」とも書かれます。書き方が違っても指板上は同じ1箇所だ、というのがギターで最初に戸惑うところです。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5弦2フレット。基準の音です。"
+    expectPitch: "B2"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "♭がついて1フレット下がります。"
+    expectPitch: "A#2"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4弦でも同じ。2フレットが基準です。"
+    expectPitch: "E3"
+  - barIndex: 1
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "♭で1フレット下へ。"
+    expectPitch: "D#3"
+  - barIndex: 2
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "5弦1フレット。「ラ#」と書かれても「シ♭」と書かれても、押さえるのはここ1箇所です。"
+    expectPitch: "A#2"
+difficulty: 3
+fretRange:
+  min: 0
+  max: 4

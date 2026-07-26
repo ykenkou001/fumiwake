@@ -1,0 +1,43 @@
+exerciseId: pitch.ledger-lines.002
+conceptId: pitch.ledger-lines
+prerequisites: ["pitch.staff-names"]
+titleJa: "五線の下に出る音"
+alphatex: |
+  \title "五線の下に出る音"
+  \tempo 60
+  .
+  \ts 4 4
+  0.4.4 3.5.4 2.5.4 0.5.4 |
+  3.6.4 1.6.4 0.6.2 |
+  0.5.4 3.5.4 0.4.2 |
+explanationJa: "加線は五線の下にも使います。ギターの低音弦はほとんどが五線の下にあるので、こちらの方が実戦でよく出てきます。加線が1本増えるごとに音が下がっていくことを確かめてください。"
+focusElements:
+  - barIndex: 0
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "4弦の開放弦。五線の一番下の線のすぐ下です。"
+    expectPitch: "D3"
+  - barIndex: 0
+    beatIndex: 1
+    noteIndex: 0
+    noteText: "5弦3フレット。下側の加線が1本つきます。"
+    expectPitch: "C3"
+  - barIndex: 0
+    beatIndex: 3
+    noteIndex: 0
+    noteText: "5弦の開放弦。加線が2本になりました。"
+    expectPitch: "A2"
+  - barIndex: 1
+    beatIndex: 0
+    noteIndex: 0
+    noteText: "6弦3フレット。さらに下がります。"
+    expectPitch: "G2"
+  - barIndex: 1
+    beatIndex: 2
+    noteIndex: 0
+    noteText: "6弦の開放弦。この譜例で一番低い音で、加線は3本です。"
+    expectPitch: "E2"
+difficulty: 2
+fretRange:
+  min: 0
+  max: 3
